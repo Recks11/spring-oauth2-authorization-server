@@ -6,12 +6,10 @@ import com.benoly.auth.repository.RoleRepository;
 import com.benoly.auth.repository.UserRepository;
 import com.benoly.auth.service.ClientService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -64,6 +62,7 @@ public class Oauth2ServerApplication implements CommandLineRunner {
 
     private List<Role> createRoles() {
         var authority = new Authority();
+        authority.setId(generateId());
         authority.setName("CAN_VIEW");
         authority.setDescription("user can view stuff");
 
@@ -87,7 +86,7 @@ public class Oauth2ServerApplication implements CommandLineRunner {
         defaultClient.setAccessTokenValiditySeconds(10 * 60);
         defaultClient.setRefreshTokenValiditySeconds(15 * 60);
         defaultClient.setScope(List.of("read", "write", "remove"));
-        defaultClient.setRegisteredRedirectUri(Set.of("http://localhost:8000/api/home"));
+        defaultClient.setRegisteredRedirectUri(Set.of("http://localhost:8000/api/me"));
         defaultClient.setAuthorizedGrantTypes(List.of(REFRESH_TOKEN, PASSWORD, AUTHORIZATION_CODE));
 
         Client save = clientService.addClient(defaultClient);
@@ -95,12 +94,12 @@ public class Oauth2ServerApplication implements CommandLineRunner {
     }
 
     private void createUser(Role role) {
-        var user = new User();
+        var user = new User("rexijie@gmail.com", encoder.encode("pass@rex"), role);
         user.setId(generateId());
         user.setEnabled(true);
-        user.setUsername("rexijie@gmail.com");
-        user.setPassword(encoder.encode("pass@rex"));
-        user.setRole(role);
+        user.setAccountNonExpired(true);
+        user.setAccountNonLocked(true);
+        user.setCredentialsNonExpired(true);
         user.setCreatedAt(LocalDateTime.now());
         User save = userRepository.save(user);
         log.info("added user {}", save);

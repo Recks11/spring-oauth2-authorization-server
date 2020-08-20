@@ -21,11 +21,6 @@ public class UserServiceImpl implements UserService {
     public UserDetails loadUserByUsername(String username) {
         var user = userRepository.findByUsername(username);
         user.getRole().getAuthorities().add(new Authority(user.getRole().getName(), user.getRole().getDescription()));
-        return User.withUsername(user.getUsername())
-                .password(user.getPassword())
-                .authorities(user.getRole().getAuthorities())
-                .accountLocked(!user.isEnabled())
-                .disabled(!user.isEnabled())
-                .build();
+        return user;
     }
 }
