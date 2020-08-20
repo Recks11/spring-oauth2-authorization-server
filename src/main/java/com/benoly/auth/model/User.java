@@ -16,6 +16,7 @@ import java.util.*;
 @Document
 @NoArgsConstructor
 public class User implements UserDetails {
+    private static final long serialVersionUID = 8668310170868956407L;
     @Id
     private String id;
     private String username;
