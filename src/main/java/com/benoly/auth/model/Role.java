@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -13,7 +14,8 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class Role extends Identified {
+public class Role extends Identified implements Serializable {
+    private static final long serialVersionUID = 1373828140005067324L;
     private String name;
     private String description;
     private Set<Authority> authorities = new HashSet<>();
