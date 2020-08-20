@@ -4,18 +4,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="Login to Oauth Services">
     <meta name="author" content="Rex Ijiekhuamen <dev.rexijie@gmail.com>">
-    <title>LOG IN</title>
+    <title>LOG OUT</title>
 </head>
 <body>
-<form th:action="@{/oauth/login}" method="post">
+<form th:action="@{/oauth/logout}" method="post">
     <!--        <p th:if="${error}"> BAD CREDENTIALS </p>-->
-    <h1>LOGIN PAGE</h1>
-    <label for="username">USERNAME</label>
-    <input type="text" id="username" name="username" required autofocus> <br/>
-    <label for="password">PASSWORD</label>
-    <input type="password" id="password" name="password" required>
+    <h1>LOGOUT</h1>
     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/> <br/>
-    <button type="submit">LOGIN</button>
+    <button type="submit">Log Out</button>
 </form>
 </body>
 </html>
