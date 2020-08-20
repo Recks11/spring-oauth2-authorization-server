@@ -10,11 +10,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-public class Api {
+public class AuthorizationController {
 
     private final ObjectMapper objectMapper;
 
-    public Api(ObjectMapper objectMapper) {
+    public AuthorizationController(ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
     }
 
@@ -25,8 +25,13 @@ public class Api {
         return new ResponseEntity<>(as, HttpStatus.OK);
     }
 
-    @GetMapping("/login")
+    @GetMapping("/oauth/login")
     public String loginPage() {
         return "login";
+    }
+
+    @GetMapping("/oauth/logout")
+    public String logout() {
+        return "logout";
     }
 }

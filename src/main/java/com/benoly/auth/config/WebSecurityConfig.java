@@ -33,12 +33,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers("/oauth/check_token").denyAll()
-                .antMatchers( "/api/**", "/login").permitAll()
+                .antMatchers("/api/**").permitAll()
                 .antMatchers().permitAll()
                 .and().authorizeRequests().anyRequest().authenticated();
 
-//        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.formLogin();
+        http.formLogin()
+                .loginPage("/oauth/login").permitAll()
+                .and()
+                .logout()
+                .logoutUrl("/oauth/logout").permitAll();
     }
 
     //
