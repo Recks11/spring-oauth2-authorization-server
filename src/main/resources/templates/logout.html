@@ -8,7 +8,6 @@
 </head>
 <body>
 <form th:action="@{/oauth/logout}" method="post">
-    <!--        <p th:if="${error}"> BAD CREDENTIALS </p>-->
     <h1>LOGOUT</h1>
     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/> <br/>
     <button type="submit">Log Out</button>

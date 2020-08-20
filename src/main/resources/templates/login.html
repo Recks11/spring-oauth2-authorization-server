@@ -8,8 +8,8 @@
 </head>
 <body>
 <form th:action="@{/oauth/login}" method="post">
-    <!--        <p th:if="${error}"> BAD CREDENTIALS </p>-->
     <h1>LOGIN PAGE</h1>
+    <p th:if="error" th:text="${error}"></p>
     <label for="username">USERNAME</label>
     <input type="text" id="username" name="username" required autofocus> <br/>
     <label for="password">PASSWORD</label>

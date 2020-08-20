@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Authorize Application</title>
+</head>
+<body>
+    <h1>Approve Access</h1>
+    <form id="confirmationForm" name="confirmationForm" th:action="@{/oauth/authorize}" method="post">
+        <p th:text="'Do you want to allow '+ ${client_name} +' to access your data'"></p>
+        <input name="user_oauth_approval" value="true" type="hidden">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/> <br/>
+
+        <ul>
+            <li th:each="scope : ${scopes}">
+                <span th:text="${scope}"></span>
+                <label>Approve: </label>
+                <input type="radio" th:name="${scope}" value="true">
+                <label>Deny: </label>
+                <input type="radio" th:name="${scope}" value="false" checked>
+            </li>
+        </ul>
+
+        <button type="submit" name="authorize">Authorize</button>
+    </form>
+</body>
+</html>
