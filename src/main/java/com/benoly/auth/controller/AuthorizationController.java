@@ -78,8 +78,6 @@ public class AuthorizationController {
         if (scopes.contains(" "))
             scopeArray = scopes.split(" ");
 
-        return Stream.of(scopeArray)
-                .map(scope -> scope = "scope.".concat(scope))
-                .collect(Collectors.toList());
+        return List.of(scopeArray);
     }
 }

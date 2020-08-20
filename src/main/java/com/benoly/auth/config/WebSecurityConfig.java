@@ -33,6 +33,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers("/oauth/check_token").denyAll()
+                .antMatchers("/css/**", "/img/**").permitAll()
                 .antMatchers("/api/**").permitAll()
                 .antMatchers().permitAll()
                 .and().authorizeRequests().anyRequest().authenticated();
