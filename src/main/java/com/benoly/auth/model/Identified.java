@@ -6,7 +6,7 @@ import org.springframework.data.annotation.Id;
 import java.io.Serializable;
 
 @Data
-abstract class Identified implements Serializable {
+abstract class Identified {
     @Id
     private String id;
 }

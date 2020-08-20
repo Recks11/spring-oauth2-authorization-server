@@ -15,7 +15,7 @@ import java.util.*;
 @Setter
 @Document
 @NoArgsConstructor
-public class User implements UserDetails {
+public class User extends Entity implements UserDetails {
     private static final long serialVersionUID = 8668310170868956407L;
     @Id
     private String id;
@@ -27,8 +27,6 @@ public class User implements UserDetails {
     private boolean accountNonExpired;
     private boolean accountNonLocked;
     private boolean credentialsNonExpired;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
 
     public User(String username, String password, Role role) {
         this.username = username;
