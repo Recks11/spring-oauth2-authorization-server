@@ -1,0 +1,17 @@
+server:
+  port: 8000
+spring:
+  application:
+    name: benoly-auth-server
+  data:
+    mongodb:
+      username: idea
+      password: ideapass
+      database: authserver
+
+
+#security:
+#  oauth2:
+#    authorization:
+#      jwt:
+#        key-value:
