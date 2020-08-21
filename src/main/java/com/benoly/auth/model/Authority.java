@@ -6,7 +6,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 
-import static com.benoly.auth.config.WebSecurityConfig.AUTHORITY_PREFIX;
+import static com.benoly.auth.config.WebSecurityConfig.ROLE_PREFIX;
 
 @Data
 @AllArgsConstructor
@@ -23,6 +23,6 @@ public class Authority extends Identified implements GrantedAuthority {
 
     @Override
     public String getAuthority() {
-        return AUTHORITY_PREFIX + name;
+        return ROLE_PREFIX + name;
     }
 }

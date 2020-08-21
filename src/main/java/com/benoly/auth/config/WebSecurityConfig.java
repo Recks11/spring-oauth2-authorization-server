@@ -20,7 +20,7 @@ import org.springframework.security.web.authentication.preauth.PreAuthenticatedA
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-    public static final String AUTHORITY_PREFIX = "ROLE_";
+    public static final String ROLE_PREFIX = "ROLE_";
 
     private final UserService userService;
 

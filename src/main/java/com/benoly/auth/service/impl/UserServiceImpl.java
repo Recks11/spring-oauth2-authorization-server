@@ -1,6 +1,7 @@
 package com.benoly.auth.service.impl;
 
 import com.benoly.auth.model.Authority;
+import com.benoly.auth.model.User;
 import com.benoly.auth.repository.UserRepository;
 import com.benoly.auth.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +16,11 @@ public class UserServiceImpl implements UserService {
 
     public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
+    }
+
+    @Override
+    public User findUserByUsername(String username) {
+        return (User) loadUserByUsername(username);
     }
 
     @Override

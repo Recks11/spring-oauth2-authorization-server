@@ -1,5 +1,6 @@
 package com.benoly.auth.tokenservices;
 
+import com.benoly.auth.model.User;
 import com.benoly.auth.model.token.AuthorizationToken;
 import com.benoly.auth.repository.AuthorizationTokenRepository;
 import org.springframework.security.oauth2.common.exceptions.InvalidGrantException;
@@ -28,6 +29,7 @@ public class CustomAuthorizationCodeServices implements AuthorizationCodeService
     @Override
     public String createAuthorizationCode(OAuth2Authentication authentication) {
         var token = createAuthorizationToken();
+        ((User) authentication.getPrincipal()).setPassword(null);
         byte[] serializedAuthentication = SerializationUtils.serialize(authentication);
         token.setAuthentication(serializedAuthentication);
         token.setUsername(authentication.getName());
@@ -42,6 +44,10 @@ public class CustomAuthorizationCodeServices implements AuthorizationCodeService
 
         var token = tokenOptional.get();
         if (token.isUsed()) throwAuthorizationCode(code);
+        if (token.isExpired()) {
+            authorizationTokenRepository.delete(token);
+            throwAuthorizationCodeExpired();
+        }
 
         var authentication = SerializationUtils.<OAuth2Authentication>deserialize(token.getAuthentication());
         token.setUsed(true);
@@ -59,14 +65,26 @@ public class CustomAuthorizationCodeServices implements AuthorizationCodeService
     protected AuthorizationToken createAuthorizationToken() {
         var id = generateUUID();
         var date = LocalDateTime.now();
-        var token = new AuthorizationToken(null,"", "", false);
+        var expiryDate = date.plusMinutes(3);
+        var token = new AuthorizationToken(null, "", "", false, expiryDate);
         token.setId(id);
         token.setCode(generateCode());
         token.setCreatedAt(date);
         return token;
     }
 
+    /**
+     *  remove sensitive data from authentication token
+     */
+    private void sanitizeAuthentication(OAuth2Authentication authentication) {
+        ((User) authentication.getPrincipal()).setPassword(null);
+    }
+
     private void throwAuthorizationCode(String code) {
         throw new InvalidGrantException("Invalid authorization code: " + code);
+    }
+
+    private void throwAuthorizationCodeExpired() {
+        throw new InvalidGrantException("Authorization code expired");
     }
 }

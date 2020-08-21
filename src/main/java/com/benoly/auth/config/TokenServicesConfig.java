@@ -1,7 +1,7 @@
 package com.benoly.auth.config;
 
 import com.benoly.auth.service.UserService;
-import com.benoly.auth.tokenservices.CustomJwtAccessTokenConverter;
+import com.benoly.auth.tokenservices.JwtTokenConverter;
 import com.benoly.auth.tokenservices.JwtTokenEnhancer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
@@ -55,8 +55,9 @@ public class TokenServicesConfig {
     }
 
     @Bean
+    @Primary
     public AccessTokenConverter accessTokenConverter() {
-        return new CustomJwtAccessTokenConverter();
+        return new JwtTokenConverter(userService);
     }
 
     private ProviderManager preAuthProvider() {
