@@ -1,5 +1,6 @@
 package com.benoly.auth.config;
 
+import com.benoly.auth.service.ClientService;
 import com.benoly.auth.service.UserService;
 import com.benoly.auth.tokenservices.ClaimPopulationDelegate;
 import com.benoly.auth.tokenservices.JwtTokenConverter;
@@ -24,11 +25,14 @@ import java.security.KeyPair;
 public class TokenServicesConfig {
     private final UserService userService;
     private final KeyPair keyPair;
+    private final ClientService clientService;
 
     public TokenServicesConfig(UserService userService,
-                               KeyPair keyPair) {
+                               KeyPair keyPair,
+                               ClientService clientService) {
         this.userService = userService;
         this.keyPair = keyPair;
+        this.clientService = clientService;
     }
 
     @Bean
@@ -39,6 +43,7 @@ public class TokenServicesConfig {
         tokenServices.setTokenStore(tokenStore());
         tokenServices.setTokenEnhancer(tokenEnhancer());
         tokenServices.setAuthenticationManager(preAuthProvider());
+        tokenServices.setClientDetailsService(clientService);
         return tokenServices;
     }
 

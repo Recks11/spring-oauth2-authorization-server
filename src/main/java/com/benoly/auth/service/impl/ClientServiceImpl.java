@@ -15,6 +15,7 @@ import org.springframework.security.oauth2.provider.ClientRegistrationException;
 import org.springframework.security.oauth2.provider.NoSuchClientException;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.benoly.auth.constants.GrantTypes.*;
@@ -39,14 +40,21 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public Client addClient(Client client) {
         var defaultClient = createDefaultClient();
+        defaultClient.addAuthority(createClientAuthority());
+
+        String secret = secretGenerator.generate();
         assignNonEmptyFields(client, defaultClient);
+
         if (defaultClient.getClientId() == null)
             defaultClient.setClientId(secretGenerator.generate(8));
-        if (defaultClient.getClientSecret() == null)
-            defaultClient.setClientSecret(secretGenerator.generate());
 
-        defaultClient.addAuthority(createClientAuthority());
-        return clientRepository.save(defaultClient);
+        if (defaultClient.getClientSecret() == null)
+            defaultClient.setClientSecret(encoder.encode(secret));
+
+        var returnedClient = clientRepository.save(defaultClient);
+        returnedClient.setClientSecret(secret);
+
+        return returnedClient;
     }
 
     public Client findByClientId(String clientId) {
@@ -109,6 +117,7 @@ public class ClientServiceImpl implements ClientService {
         defaultClient.setScope(List.of("read", "write", "profile"));
         defaultClient.setAuthorizedGrantTypes(List.of(PASSWORD, AUTHORIZATION_CODE, REFRESH_TOKEN));
         defaultClient.setAuthorities(List.of(authority));
+        defaultClient.setCreatedAt(LocalDateTime.now());
 
         return defaultClient;
     }

@@ -20,7 +20,7 @@ public class User extends Entity implements UserDetails {
     private String username;
     private String password;
     private Role role;
-    private UserProfile profile;
+    private transient UserInfo userInfo;
     private boolean isEnabled;
     private boolean accountNonExpired;
     private boolean accountNonLocked;
@@ -64,11 +64,11 @@ public class User extends Entity implements UserDetails {
         User user = (User) o;
         return username.equals(user.username) &&
                 role.equals(user.role) &&
-                Objects.equals(profile, user.profile);
+                Objects.equals(userInfo, user.userInfo);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), username, role, profile);
+        return Objects.hash(super.hashCode(), username, role, userInfo);
     }
 }

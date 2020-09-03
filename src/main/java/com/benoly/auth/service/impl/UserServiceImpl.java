@@ -2,7 +2,7 @@ package com.benoly.auth.service.impl;
 
 import com.benoly.auth.model.Authority;
 import com.benoly.auth.model.User;
-import com.benoly.auth.model.UserProfile;
+import com.benoly.auth.model.UserInfo;
 import com.benoly.auth.repository.UserRepository;
 import com.benoly.auth.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -33,12 +33,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserProfile findProfileByUserId(String id) {
+    public UserInfo findProfileByUserId(String id) {
         return null;
     }
 
     @Override
-    public UserProfile findProfileByUsername() {
+    public UserInfo findProfileByUsername() {
         return null;
     }
 }

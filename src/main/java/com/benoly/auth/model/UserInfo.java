@@ -10,7 +10,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonPropertyOrder({"firstname", "lastname", "fullname", "email", "dob"})
-public class UserProfile extends Entity {
+public class UserInfo extends Entity {
     @JsonProperty("first_name")
     private String firstName;
 

@@ -43,7 +43,7 @@ public class ClaimPopulationDelegate {
     }
 
     private void populateIdClaims(Claims claims, User user) {
-        var profile = user.getProfile();
+        var profile = user.getUserInfo();
         claims.put(FAMILY_NAME_CLAIM, profile.getLastName());
         claims.put(GIVEN_NAME_CLAIM, profile.getFirstName());
         claims.put(BIRTH_DATE_CLAIM, profile.getDataOfBirth());

@@ -28,9 +28,10 @@ public class CustomAuthorizationCodeServices implements AuthorizationCodeService
 
     @Override
     public String createAuthorizationCode(OAuth2Authentication authentication) {
-        var token = createAuthorizationToken();
-        ((User) authentication.getPrincipal()).setPassword(null);
+        sanitizeAuthentication(authentication);
+
         byte[] serializedAuthentication = SerializationUtils.serialize(authentication);
+        var token = createAuthorizationToken();
         token.setAuthentication(serializedAuthentication);
         token.setUsername(authentication.getName());
         token = authorizationTokenRepository.save(token);

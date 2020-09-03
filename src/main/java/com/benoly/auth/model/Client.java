@@ -6,6 +6,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.oauth2.provider.client.BaseClientDetails;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Data
@@ -17,6 +18,9 @@ public class Client extends BaseClientDetails {
     @Id
     private String id;
     private String name;
+
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     public String getId() {
         return id;

@@ -78,24 +78,25 @@ public class Oauth2ServerApplication implements CommandLineRunner {
     }
 
     private void createClient() {
-        var defaultClient = new Client();
-        defaultClient.setId(generateId());
-        defaultClient.setName("Benoly management app");
-        defaultClient.setClientId("management-app");
-        defaultClient.setClientSecret(encoder.encode("secret"));
-        defaultClient.setAccessTokenValiditySeconds(10 * 60);
-        defaultClient.setRefreshTokenValiditySeconds(15 * 60);
-        defaultClient.setScope(List.of("read", "write", "remove", "profile"));
-        defaultClient.setRegisteredRedirectUri(Set.of("http://localhost:8000/api/me"));
-        defaultClient.setAuthorizedGrantTypes(List.of(REFRESH_TOKEN, PASSWORD, AUTHORIZATION_CODE));
+        var registeredClient = new Client();
+        registeredClient.setId(generateId());
+        registeredClient.setName("Benoly management app");
+        registeredClient.setClientId("management-app");
+        registeredClient.setClientSecret(encoder.encode("secret"));
+        registeredClient.setAccessTokenValiditySeconds(10 * 60);
+        registeredClient.setRefreshTokenValiditySeconds(15 * 60);
+        registeredClient.setResourceIds(List.of("benoly/stock-management"));
+        registeredClient.setScope(List.of("read", "write", "remove", "profile"));
+        registeredClient.setRegisteredRedirectUri(Set.of("http://localhost:8000/api/me"));
+        registeredClient.setAuthorizedGrantTypes(List.of(REFRESH_TOKEN, PASSWORD, AUTHORIZATION_CODE));
 
-        Client save = clientService.addClient(defaultClient);
+        Client save = clientService.addClient(registeredClient);
         log.info("added client {}", save.toString());
     }
 
     private void createUser(Role role) {
         var user = new User("rexijie@gmail.com", encoder.encode("pass@rex"), role);
-        var profile = UserProfile.builder()
+        var profile = UserInfo.builder()
                 .firstName("Rex")
                 .lastName("Ijiekhuamen")
                 .email(user.getUsername())
@@ -103,7 +104,7 @@ public class Oauth2ServerApplication implements CommandLineRunner {
                 .build();
         user.setId(generateId());
         user.setEnabled(true);
-        user.setProfile(profile);
+        user.setUserInfo(profile);
         user.setAccountNonExpired(true);
         user.setAccountNonLocked(true);
         user.setCredentialsNonExpired(true);
