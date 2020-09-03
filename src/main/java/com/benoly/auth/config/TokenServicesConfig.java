@@ -1,6 +1,7 @@
 package com.benoly.auth.config;
 
 import com.benoly.auth.service.UserService;
+import com.benoly.auth.tokenservices.ClaimPopulationDelegate;
 import com.benoly.auth.tokenservices.JwtTokenConverter;
 import com.benoly.auth.tokenservices.JwtTokenEnhancer;
 import lombok.extern.slf4j.Slf4j;
@@ -57,7 +58,12 @@ public class TokenServicesConfig {
     @Bean
     @Primary
     public AccessTokenConverter accessTokenConverter() {
-        return new JwtTokenConverter(userService);
+        return new JwtTokenConverter();
+    }
+
+    @Bean
+    public ClaimPopulationDelegate claimPopulationDelegate() {
+        return new ClaimPopulationDelegate(userService);
     }
 
     private ProviderManager preAuthProvider() {
