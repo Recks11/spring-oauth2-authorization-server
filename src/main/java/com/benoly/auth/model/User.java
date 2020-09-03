@@ -3,13 +3,13 @@ package com.benoly.auth.model;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -20,7 +20,7 @@ public class User extends Entity implements UserDetails {
     private String username;
     private String password;
     private Role role;
-    // private UserInfo additionalUserInfo;
+    private UserProfile profile;
     private boolean isEnabled;
     private boolean accountNonExpired;
     private boolean accountNonLocked;
@@ -43,6 +43,7 @@ public class User extends Entity implements UserDetails {
         sb.append("User").append(" {");
         sb.append("Username: ").append(this.username).append("; ");
         sb.append("Password: [PROTECTED]; ");
+        sb.append("Profile: [PROTECTED]; ");
         sb.append("Role: ").append(this.role).append("; ");
         sb.append("Enabled: ").append(this.isEnabled).append("; ");
         sb.append("AccountNonExpired: ").append(this.accountNonExpired).append("; ");
@@ -53,5 +54,21 @@ public class User extends Entity implements UserDetails {
         sb.append(" }");
 
         return sb.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        User user = (User) o;
+        return username.equals(user.username) &&
+                role.equals(user.role) &&
+                Objects.equals(profile, user.profile);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), username, role, profile);
     }
 }
