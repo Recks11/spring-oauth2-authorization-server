@@ -5,6 +5,7 @@ import com.benoly.auth.model.AuthorityEnum;
 import com.benoly.auth.model.Client;
 import com.benoly.auth.repository.ClientRepository;
 import com.benoly.auth.service.ClientService;
+import com.benoly.auth.service.SecretGenerator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -16,7 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static com.benoly.auth.constants.GrantTypes.PASSWORD;
+import static com.benoly.auth.constants.GrantTypes.*;
 import static com.benoly.auth.util.ObjectUtils.applyIfNonNull;
 import static com.benoly.auth.util.TokenUtils.generateUUID;
 
@@ -25,17 +26,24 @@ import static com.benoly.auth.util.TokenUtils.generateUUID;
 public class ClientServiceImpl implements ClientService {
     private final ClientRepository clientRepository;
     private final PasswordEncoder encoder;
+    private final SecretGenerator secretGenerator;
 
     public ClientServiceImpl(ClientRepository clientRepository,
-                             PasswordEncoder encoder) {
+                             PasswordEncoder encoder,
+                             SecretGenerator secretGenerator) {
         this.clientRepository = clientRepository;
         this.encoder = encoder;
+        this.secretGenerator = secretGenerator;
     }
 
     @Override
     public Client addClient(Client client) {
         var defaultClient = createDefaultClient();
         assignNonEmptyFields(client, defaultClient);
+        if (defaultClient.getClientId() == null)
+            defaultClient.setClientId(secretGenerator.generate(8));
+        if (defaultClient.getClientSecret() == null)
+            defaultClient.setClientSecret(secretGenerator.generate());
 
         defaultClient.addAuthority(createClientAuthority());
         return clientRepository.save(defaultClient);
@@ -92,14 +100,14 @@ public class ClientServiceImpl implements ClientService {
     private Client createDefaultClient() {
         var authority = new Authority();
         authority.setName("CLIENT");
-        authority.setDescription("user can view stuff");
+        authority.setDescription("application only authority. CLIENTS request tokens on behalf of users");
 
         var defaultClient = new Client();
         defaultClient.setId(generateUUID());
         defaultClient.setAccessTokenValiditySeconds(10 * 60);
         defaultClient.setRefreshTokenValiditySeconds(15 * 60);
-        defaultClient.setScope(List.of("read", "write"));
-        defaultClient.setAuthorizedGrantTypes(List.of(PASSWORD));
+        defaultClient.setScope(List.of("read", "write", "profile"));
+        defaultClient.setAuthorizedGrantTypes(List.of(PASSWORD, AUTHORIZATION_CODE, REFRESH_TOKEN));
         defaultClient.setAuthorities(List.of(authority));
 
         return defaultClient;

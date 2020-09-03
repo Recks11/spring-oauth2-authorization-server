@@ -85,7 +85,7 @@ public class Oauth2ServerApplication implements CommandLineRunner {
         defaultClient.setClientSecret(encoder.encode("secret"));
         defaultClient.setAccessTokenValiditySeconds(10 * 60);
         defaultClient.setRefreshTokenValiditySeconds(15 * 60);
-        defaultClient.setScope(List.of("read", "write", "remove"));
+        defaultClient.setScope(List.of("read", "write", "remove", "profile"));
         defaultClient.setRegisteredRedirectUri(Set.of("http://localhost:8000/api/me"));
         defaultClient.setAuthorizedGrantTypes(List.of(REFRESH_TOKEN, PASSWORD, AUTHORIZATION_CODE));
 
@@ -95,8 +95,15 @@ public class Oauth2ServerApplication implements CommandLineRunner {
 
     private void createUser(Role role) {
         var user = new User("rexijie@gmail.com", encoder.encode("pass@rex"), role);
+        var profile = UserProfile.builder()
+                .firstName("Rex")
+                .lastName("Ijiekhuamen")
+                .email(user.getUsername())
+                .dataOfBirth("19 September")
+                .build();
         user.setId(generateId());
         user.setEnabled(true);
+        user.setProfile(profile);
         user.setAccountNonExpired(true);
         user.setAccountNonLocked(true);
         user.setCredentialsNonExpired(true);
