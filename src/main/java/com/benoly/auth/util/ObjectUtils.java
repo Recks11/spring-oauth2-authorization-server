@@ -16,9 +16,8 @@ public class ObjectUtils {
     public static <T> void applyIfNonNull(T object, Consumer<T> function) {
         if (object == null) return;
         if (object instanceof Collection) {
-            if (!((Collection<?>) object).isEmpty()) {
-                function.accept(object);
-            }
+            var collection = ((Collection<?>) object);
+            if (collection.isEmpty()) return;
         }
         function.accept(object);
     }

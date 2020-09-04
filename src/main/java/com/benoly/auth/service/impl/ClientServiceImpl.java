@@ -40,14 +40,9 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public Client addClient(Client client) {
         var defaultClient = createDefaultClient();
-        defaultClient.addAuthority(createClientAuthority());
-
-        String secret = secretGenerator.generate();
         assignNonEmptyFields(client, defaultClient);
 
-        if (defaultClient.getClientId() == null)
-            defaultClient.setClientId(secretGenerator.generate(8));
-
+        String secret = secretGenerator.generate();
         if (defaultClient.getClientSecret() == null)
             defaultClient.setClientSecret(encoder.encode(secret));
 
@@ -106,17 +101,14 @@ public class ClientServiceImpl implements ClientService {
     }
 
     private Client createDefaultClient() {
-        var authority = new Authority();
-        authority.setName("CLIENT");
-        authority.setDescription("application only authority. CLIENTS request tokens on behalf of users");
-
         var defaultClient = new Client();
         defaultClient.setId(generateUUID());
+        defaultClient.setClientId(secretGenerator.generate(8));
         defaultClient.setAccessTokenValiditySeconds(10 * 60);
         defaultClient.setRefreshTokenValiditySeconds(15 * 60);
         defaultClient.setScope(List.of("read", "write", "profile"));
         defaultClient.setAuthorizedGrantTypes(List.of(PASSWORD, AUTHORIZATION_CODE, REFRESH_TOKEN));
-        defaultClient.setAuthorities(List.of(authority));
+        defaultClient.setAuthorities(List.of(createClientAuthority()));
         defaultClient.setCreatedAt(LocalDateTime.now());
 
         return defaultClient;

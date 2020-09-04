@@ -23,7 +23,7 @@ public class CustomAuthorizationCodeServices implements AuthorizationCodeService
 
     public CustomAuthorizationCodeServices(AuthorizationTokenRepository authorizationTokenRepository) {
         this.authorizationTokenRepository = authorizationTokenRepository;
-        this.generator = new RandomValueStringGenerator(12);
+        this.generator = new RandomValueStringGenerator(16);
     }
 
     @Override

@@ -5,7 +5,7 @@ public enum AuthorityEnum {
     CAN_MODIFY("CAN_CREATE", "has authority to modify"),
     CAN_VIEW("CAN_VIEW", "has authority to view"),
     CAN_DELETE("CAN_DELETE", "has authority to delete"),
-    CLIENT("CLIENT", "can issue tokens");
+    CLIENT("CLIENT", "application only authority. can request for tokens on behalf of users");
 
     private final String name;
     private final String description;
