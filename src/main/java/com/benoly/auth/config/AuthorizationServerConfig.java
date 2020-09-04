@@ -55,8 +55,8 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) {
-        security.tokenKeyAccess("permitAll()")
-                .checkTokenAccess("permitAll()")
+        security.tokenKeyAccess("isAnonymous() || hasAuthority('ROLE_CLIENT')")
+                .checkTokenAccess("hasAuthority('ROLE_CLIENT')")
                 .passwordEncoder(passwordEncoder);
     }
 

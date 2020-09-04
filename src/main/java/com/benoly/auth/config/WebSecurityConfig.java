@@ -32,8 +32,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/oauth/check_token").denyAll()
-                .antMatchers("/.well-known/**").permitAll()
+                .antMatchers("/.well-known/**").authenticated()
                 .antMatchers("/css/**", "/img/**").permitAll()
                 .antMatchers("/api/**").permitAll()
                 .antMatchers().permitAll()
