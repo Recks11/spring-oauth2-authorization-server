@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserInfo findProfileByUsername() {
-        return null;
+    public UserInfo findProfileByUsername(String username) {
+        return findUserByUsername(username).getUserInfo();
     }
 }

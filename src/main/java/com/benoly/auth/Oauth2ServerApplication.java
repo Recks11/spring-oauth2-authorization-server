@@ -86,7 +86,7 @@ public class Oauth2ServerApplication implements CommandLineRunner {
         registeredClient.setAccessTokenValiditySeconds(10 * 60);
         registeredClient.setRefreshTokenValiditySeconds(15 * 60);
         registeredClient.setResourceIds(List.of("benoly/stock-management"));
-        registeredClient.setScope(List.of("read", "write", "remove", "profile", "openid"));
+        registeredClient.setScope(List.of("read", "write", "remove", "profile", "openid", "email"));
         registeredClient.setRegisteredRedirectUri(Set.of("http://localhost:8000/api/me"));
         registeredClient.setAuthorizedGrantTypes(List.of(REFRESH_TOKEN, PASSWORD, AUTHORIZATION_CODE));
 
@@ -99,6 +99,7 @@ public class Oauth2ServerApplication implements CommandLineRunner {
         var profile = UserInfo.builder()
                 .firstName("Rex")
                 .lastName("Ijiekhuamen")
+                .username(user.getUsername())
                 .email(user.getUsername())
                 .dataOfBirth("19 September")
                 .build();

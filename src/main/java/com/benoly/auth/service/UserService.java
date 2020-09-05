@@ -7,5 +7,5 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 public interface UserService extends UserDetailsService {
     User findUserByUsername(String username);
     UserInfo findProfileByUserId(String id);
-    UserInfo findProfileByUsername();
+    UserInfo findProfileByUsername(String username);
 }

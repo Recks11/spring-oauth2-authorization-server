@@ -11,23 +11,26 @@ import org.codehaus.jackson.annotate.JsonProperty;
 @NoArgsConstructor
 @JsonPropertyOrder({"firstname", "lastname", "fullname", "email", "dob"})
 public class UserInfo extends Entity {
-    @JsonProperty("first_name")
+    @JsonProperty("given_name")
     private String firstName;
 
-    @JsonProperty("last_name")
+    @JsonProperty("family_name")
     private String lastName;
+
+    @JsonProperty("preferred_username")
+    private String username;
 
     private String email;
 
     @JsonProperty("phone_number")
     private String phoneNumber;
 
-    @JsonProperty("dob")
+    @JsonProperty("birthdate")
     private String dataOfBirth;
 
 
     @JsonProperty("name")
-    private String getFullName() {
+    public String getFullName() {
         StringBuilder sb = new StringBuilder();
         return sb.append(firstName)
                 .append(" ")

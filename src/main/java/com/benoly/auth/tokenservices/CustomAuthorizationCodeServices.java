@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 import static com.benoly.auth.util.TokenUtils.generateUUID;
 
 /**
- * Custom authorization code services to persist authorizaiton codes.
+ * Custom authorization code services to persist authorization codes.
  */
 public class CustomAuthorizationCodeServices implements AuthorizationCodeServices {
 
@@ -29,7 +29,6 @@ public class CustomAuthorizationCodeServices implements AuthorizationCodeService
     @Override
     public String createAuthorizationCode(OAuth2Authentication authentication) {
         sanitizeAuthentication(authentication);
-
         byte[] serializedAuthentication = SerializationUtils.serialize(authentication);
         var token = createAuthorizationToken();
         token.setAuthentication(serializedAuthentication);

@@ -13,6 +13,7 @@ import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.core.userdetails.UserDetailsByNameServiceWrapper;
 import org.springframework.security.oauth2.provider.token.AccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
+import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
@@ -54,7 +55,7 @@ public class TokenServicesConfig {
 
     @Bean
     public JwtAccessTokenConverter tokenEnhancer() {
-        var jwtTokenEnhancer = new JwtTokenEnhancer();
+        var jwtTokenEnhancer = new JwtTokenEnhancer(userService);
         jwtTokenEnhancer.setAccessTokenConverter(accessTokenConverter());
         jwtTokenEnhancer.setKeyPair(keyPair);
         return jwtTokenEnhancer;

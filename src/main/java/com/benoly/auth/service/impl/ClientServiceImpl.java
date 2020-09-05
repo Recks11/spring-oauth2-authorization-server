@@ -106,7 +106,7 @@ public class ClientServiceImpl implements ClientService {
         defaultClient.setClientId(secretGenerator.generate(8));
         defaultClient.setAccessTokenValiditySeconds(10 * 60);
         defaultClient.setRefreshTokenValiditySeconds(15 * 60);
-        defaultClient.setScope(List.of("read", "write", "profile"));
+        defaultClient.setScope(List.of("read", "write", "profile", "openid", "email"));
         defaultClient.setAuthorizedGrantTypes(List.of(PASSWORD, AUTHORIZATION_CODE, REFRESH_TOKEN));
         defaultClient.setAuthorities(List.of(createClientAuthority()));
         defaultClient.setCreatedAt(LocalDateTime.now());
