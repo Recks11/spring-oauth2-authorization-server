@@ -3,10 +3,8 @@ package com.benoly.auth.config;
 import com.benoly.auth.repository.AuthorizationTokenRepository;
 import com.benoly.auth.service.ClientService;
 import com.benoly.auth.service.UserService;
-import com.benoly.auth.tokenservices.CustomAuthorizationCodeServices;
+import com.benoly.auth.tokenservices.PersistentAuthorizationCodeServices;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -71,7 +69,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 authenticationManager(authenticationManager)
                 .userDetailsService(userService)
                 .accessTokenConverter(accessTokenConverter)
-                .authorizationCodeServices(new CustomAuthorizationCodeServices(authorizationTokenRepository))
+                .authorizationCodeServices(new PersistentAuthorizationCodeServices(authorizationTokenRepository))
                 .tokenServices(tokenServices);
 
         endpoints.addInterceptor(new SessionInvalidatingHandlerInterceptor());

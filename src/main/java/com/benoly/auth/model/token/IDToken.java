@@ -14,6 +14,7 @@ import org.springframework.security.oauth2.common.OAuth2RefreshToken;
 
 import java.util.*;
 
+import static io.jsonwebtoken.Claims.ISSUED_AT;
 import static org.springframework.security.oauth2.common.util.OAuth2Utils.CLIENT_ID;
 
 @Data
@@ -49,7 +50,7 @@ public class IDToken implements OAuth2AccessToken {
         this.subject = claims.getSubject();
         this.audience = claims.getAudience();
         this.expiry = claims.getExpiration();
-        this.issuedAt = claims.getIssuedAt();
+        this.issuedAt = claims.containsKey(ISSUED_AT) ? claims.getIssuedAt() : new Date();
         if (claims.containsKey("auth_time"))
             this.authTime = claims.get("auth_time", Integer.class);
         if (claims.containsKey("nonce"))
@@ -58,7 +59,7 @@ public class IDToken implements OAuth2AccessToken {
             this.authorizedParty = claims.get(CLIENT_ID, String.class);
         if (claims.containsKey("at_hash"))
             this.accessTokenHash = claims.get("at_hash", String.class);
-        this.additionalInformation = new DefaultClaims();
+        this.additionalInformation = new HashMap<>();
     }
 
     @Override

@@ -1,6 +1,10 @@
 package com.benoly.auth.constants;
 
 public class Claims {
+    public static class JwtClaims {
+        public static final String USERNAME_CLAIM = "user_name";
+        public static final String ROLE_CLAIM = "role";
+    }
     public static class OpenIdClaims {
         public static final String NAME_CLAIM = "name";
         public static final String FAMILY_NAME_CLAIM = "family_name";

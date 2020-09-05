@@ -16,12 +16,12 @@ import static com.benoly.auth.util.TokenUtils.generateUUID;
 /**
  * Custom authorization code services to persist authorization codes.
  */
-public class CustomAuthorizationCodeServices implements AuthorizationCodeServices {
+public class PersistentAuthorizationCodeServices implements AuthorizationCodeServices {
 
     private final RandomValueStringGenerator generator;
     private final AuthorizationTokenRepository authorizationTokenRepository;
 
-    public CustomAuthorizationCodeServices(AuthorizationTokenRepository authorizationTokenRepository) {
+    public PersistentAuthorizationCodeServices(AuthorizationTokenRepository authorizationTokenRepository) {
         this.authorizationTokenRepository = authorizationTokenRepository;
         this.generator = new RandomValueStringGenerator(16);
     }
