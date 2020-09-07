@@ -8,4 +8,6 @@ public interface UserService extends UserDetailsService {
     User findUserByUsername(String username);
     UserInfo findProfileByUserId(String id);
     UserInfo findProfileByUsername(String username);
+    User addUser(User user);
+    User updateUserInfo(User user);
 }
