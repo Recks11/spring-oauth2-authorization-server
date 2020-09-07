@@ -7,10 +7,10 @@ import java.util.Map;
 
 public interface IDTokenClaimsEnhancer extends JwtClaimsEnhancer {
 
-    Map<String, Object> addProfileClaims(Map<String, Object> originalClaims, UserDetails user);
-    Map<String, Object> addEmailClaims(Map<String, Object> originalClaims, UserDetails user);
-    Map<String, Object> addAddressClaims(Map<String, Object> originalClaims, UserDetails user);
-    Map<String, Object> addPhoneClaims(Map<String, Object> originalClaims, UserDetails user);
+    void addProfileClaims(Map<String, Object> originalClaims, UserDetails user);
+    void addEmailClaims(Map<String, Object> originalClaims, UserDetails user);
+    void addAddressClaims(Map<String, Object> originalClaims, UserDetails user);
+    void addPhoneClaims(Map<String, Object> originalClaims, UserDetails user);
 
 
     default <T> T getUserFromUserDetails(UserDetails userDetails, Class<T> userClazz) {

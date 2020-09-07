@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static io.jsonwebtoken.Claims.*;
+import static org.springframework.security.oauth2.core.oidc.IdTokenClaimNames.AZP;
 import static org.springframework.security.oauth2.provider.token.UserAuthenticationConverter.USERNAME;
 
 /**
@@ -35,7 +36,7 @@ public class JwtTokenConverter extends DefaultAccessTokenConverter {
     @Override
     public Map<String, ?> convertAccessToken(OAuth2AccessToken token, OAuth2Authentication authentication) {
         if (token.getTokenType().equals(IDToken.TYPE))
-            return ((IDToken) token).toClaimsMap();
+            return ((IDToken) token).getClaims();
 
         var superToken = super.convertAccessToken(token, authentication);
         Claims claims = new DefaultClaims(new HashMap<>(superToken));
@@ -69,8 +70,8 @@ public class JwtTokenConverter extends DefaultAccessTokenConverter {
         var response = new HashMap<String, Object>(map);
         Object username = response.remove(SUBJECT);
         response.put(USERNAME, username);
-        if (response.containsKey("azp") && !response.containsKey(CLIENT_ID))
-            response.put(CLIENT_ID, response.get("azp"));
+        if (response.containsKey(AZP) && !response.containsKey(CLIENT_ID))
+            response.put(CLIENT_ID, response.get(AZP));
         return super.extractAuthentication(response);
     }
 }

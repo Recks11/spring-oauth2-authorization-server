@@ -4,13 +4,13 @@ import lombok.NonNull;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.util.SerializationUtils;
 
-import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Base64;
-import java.util.UUID;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.util.*;
 
 public class TokenUtils {
     public static String serializeAuthentication(@NonNull OAuth2Authentication auth2Authentication) {
@@ -39,6 +39,41 @@ public class TokenUtils {
         } catch (NoSuchAlgorithmException exception) {
             throw new IllegalStateException("MD5 algorithm not available");
         }
+    }
+
+    public static MessageDigest getMessageDigestInstance(String algorithm) {
+        try {
+            return MessageDigest.getInstance(algorithm);
+        } catch (NoSuchAlgorithmException ignored) {
+            throw new RuntimeException("unable to get hash algorithm");
+        }
+    }
+
+    public static byte[] hashString(String algorithm, String value) {
+        return getMessageDigestInstance(algorithm)
+                .digest(value.getBytes(StandardCharsets.US_ASCII));
+    }
+
+    public static Map<String, Object> toOpenIdCompliantMap(Map<String, Object> claimsMap) {
+        Map<String, Object> mutableMap = new HashMap<>(claimsMap);
+        mutableMap.keySet()
+                .parallelStream()
+                .forEach(key -> {
+                    if (mutableMap.get(key) instanceof Instant) {
+                        Instant instant = (Instant) mutableMap.get(key);
+                        mutableMap.put(key, new Date(instant.toEpochMilli()));
+                    }
+
+                    if (mutableMap.get(key) instanceof LocalDate) {
+                        LocalDate localDate = (LocalDate) mutableMap.get(key);
+                        String date = localDate.toString();
+                        mutableMap.put(key, date);
+                    }
+
+                    if (mutableMap.get(key) == null)
+                        mutableMap.remove(key);
+                });
+        return mutableMap;
     }
 
     public static String generateUUID() {

@@ -21,12 +21,9 @@ import static com.benoly.auth.util.ObjectUtils.applyIfNonNull;
 @Slf4j
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
-    private final PasswordEncoder encoder;
 
-    public UserServiceImpl(UserRepository userRepository,
-                           PasswordEncoder encoder) {
+    public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.encoder = encoder;
     }
 
     @Override
@@ -81,9 +78,9 @@ public class UserServiceImpl implements UserService {
 
     protected User updatePassword(String username, String rawPassword) {
         User userToUpdate = findUserByUsername(username);
-        String encryptedPassword = encoder.encode(rawPassword);
+//        String encryptedPassword = encoder.encode(rawPassword);
 //        if (encryptedPassword.equals(userToUpdate.getPassword()))
-        userToUpdate.setPassword(encryptedPassword);
+        userToUpdate.setPassword(rawPassword);
         return update(userToUpdate);
     }
 
