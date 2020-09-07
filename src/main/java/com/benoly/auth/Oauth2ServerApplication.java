@@ -11,6 +11,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
@@ -101,7 +102,7 @@ public class Oauth2ServerApplication implements CommandLineRunner {
                 .lastName("Ijiekhuamen")
                 .username(user.getUsername())
                 .email(user.getUsername())
-                .dataOfBirth("19 September")
+                .dataOfBirth(LocalDate.of(2000, 1, 30)) // random day
                 .build();
         user.setId(generateId());
         user.setEnabled(true);

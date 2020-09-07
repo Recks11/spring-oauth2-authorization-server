@@ -32,6 +32,7 @@ public class IDTokenEnhancer implements IDTokenClaimsEnhancer {
         Map<String, Object> claims = new HashMap<>(originalClaims);
         var profile = getUserFromUserDetails(user, User.class).getUserInfo();
         claims.put(EMAIL_CLAIM, profile.getEmail());
+        claims.put(EMAIL_VERIFIED, profile.isEmailVerified());
         return claims;
     }
 
@@ -43,6 +44,9 @@ public class IDTokenEnhancer implements IDTokenClaimsEnhancer {
 
     @Override
     public Map<String, Object> addPhoneClaims(Map<String, Object> originalClaims, UserDetails user) {
+        var profile = getUserFromUserDetails(user, User.class).getUserInfo();
+        originalClaims.put(PHONE_CLAIM, profile.getPhoneNumber());
+        originalClaims.put(PHONE_VERIFIED, profile.isEmailVerified());
         // add phone numbers
         return originalClaims;
     }

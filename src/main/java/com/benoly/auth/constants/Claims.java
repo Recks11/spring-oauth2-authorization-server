@@ -12,7 +12,9 @@ public class Claims {
         public static final String PREFERRED_USERNAME_CLAIM = "preferred_username";
         public static final String BIRTH_DATE_CLAIM = "birthdate";
         public static final String EMAIL_CLAIM = "email";
+        public static final String EMAIL_VERIFIED = "email_verified";
         public static final String PHONE_CLAIM = "phone";
+        public static final String PHONE_VERIFIED = "phone_verified";
         public static final String PICTURE_CLAIM = "picture";
         public static final String PROFILE_CLAIM = "profile";
         public static final String AUTHORIZED_PARTY = "azp";
