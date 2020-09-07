@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.security.Principal;
 import java.util.Map;
 
-@Controller
+//@Controller
 public class CustomTokenEndpoint {
 
     private final TokenEndpoint tokenEndpoint;
@@ -23,7 +23,7 @@ public class CustomTokenEndpoint {
         this.tokenEndpoint = tokenEndpoint;
     }
 
-    @RequestMapping(value = "/oauth/token", method=RequestMethod.POST)
+//    @RequestMapping(value = "/oauth/token", method=RequestMethod.POST)
     public ResponseEntity<? extends OAuth2AccessToken> postAccessToken(Principal principal,
                                                              @RequestParam Map<String, String> parameters) throws HttpRequestMethodNotSupportedException {
         OAuth2AccessToken token = tokenEndpoint.postAccessToken(principal, parameters).getBody();
