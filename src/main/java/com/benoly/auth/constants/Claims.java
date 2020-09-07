@@ -15,5 +15,10 @@ public class Claims {
         public static final String PHONE_CLAIM = "phone";
         public static final String PICTURE_CLAIM = "picture";
         public static final String PROFILE_CLAIM = "profile";
+        public static final String AUTHORIZED_PARTY = "azp";
+        public static final String AUTH_TIME = "auth_time";
+        public static final String NONCE = "nonce";
+        public static final String ACCESS_TOKEN_HASH = "at_hash";
+
     }
 }

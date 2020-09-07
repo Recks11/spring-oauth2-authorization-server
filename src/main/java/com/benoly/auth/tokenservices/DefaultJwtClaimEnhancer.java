@@ -4,13 +4,14 @@ import com.benoly.auth.service.UserService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.impl.DefaultClaims;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 
 import java.util.Map;
 
 import static com.benoly.auth.constants.Claims.JwtClaims.ROLE_CLAIM;
 import static com.benoly.auth.constants.Claims.JwtClaims.USERNAME_CLAIM;
 
-
+@PropertySource("classpath:tokenclaims.properties")
 public class DefaultJwtClaimEnhancer implements JwtClaimsEnhancer {
 
     @Value("${auth.jwt.issuer:https://rexijie.dev}")

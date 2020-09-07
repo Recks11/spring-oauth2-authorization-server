@@ -30,7 +30,7 @@ public class AuthorizationController {
         this.clientService = clientService;
     }
 
-    @GetMapping("/api/me")
+    @GetMapping("/api/introspect")
     @ResponseBody
     public ResponseEntity<String> home(@AuthenticationPrincipal Authentication authentication) throws Exception {
         var as = objectMapper.writeValueAsString(authentication);

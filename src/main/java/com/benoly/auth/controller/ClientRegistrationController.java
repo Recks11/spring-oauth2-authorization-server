@@ -15,11 +15,11 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/clients")
-public class ClientController {
+public class ClientRegistrationController {
 
     private final ClientService clientService;
 
-    public ClientController(ClientService clientService) {
+    public ClientRegistrationController(ClientService clientService) {
         this.clientService = clientService;
     }
 

@@ -1,11 +1,12 @@
 package com.benoly.auth.config;
 
+import com.benoly.auth.config.interceptors.SessionInvalidatingHandlerInterceptor;
 import com.benoly.auth.repository.AuthorizationTokenRepository;
 import com.benoly.auth.service.ClientService;
 import com.benoly.auth.service.UserService;
 import com.benoly.auth.tokenservices.PersistentAuthorizationCodeServices;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,13 +17,6 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.token.AccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
-import org.springframework.web.servlet.view.RedirectView;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 @Configuration
 @EnableAuthorizationServer
@@ -54,7 +48,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) {
         security.tokenKeyAccess("isAnonymous() || hasAuthority('ROLE_CLIENT')")
-                .checkTokenAccess("hasAuthority('ROLE_CLIENT')")
+                .checkTokenAccess("permitAll()")
                 .passwordEncoder(passwordEncoder);
     }
 
@@ -70,34 +64,11 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 .userDetailsService(userService)
                 .accessTokenConverter(accessTokenConverter)
                 .authorizationCodeServices(new PersistentAuthorizationCodeServices(authorizationTokenRepository))
-                .tokenServices(tokenServices);
+                .tokenServices(tokenServices)
+                .allowedTokenEndpointRequestMethods(HttpMethod.GET, HttpMethod.POST);
 
         endpoints.addInterceptor(new SessionInvalidatingHandlerInterceptor());
     }
 
 
-}
-
-/**
- * This is interceptor invalidates sessions after the Authorization code flow is complete
- * To ensure the Authorization server is stateless
- */
-@Slf4j
-class SessionInvalidatingHandlerInterceptor extends HandlerInterceptorAdapter {
-
-    @Override
-    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) {
-        if (modelAndView != null && modelAndView.getView() instanceof RedirectView) {
-            RedirectView redirectView = (RedirectView) modelAndView.getView();
-            String redirectUrl = redirectView.getUrl();
-            if (redirectUrl == null) return;
-            if (redirectUrl.contains("code=") || redirectUrl.contains("error=") ) {
-                HttpSession session = request.getSession(false);
-                if (session != null) {
-                    log.debug("invalidating session {}", session.getId());
-                    session.invalidate();
-                }
-            }
-        }
-     }
 }

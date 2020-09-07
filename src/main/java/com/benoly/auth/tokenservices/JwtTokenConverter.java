@@ -28,14 +28,14 @@ public class JwtTokenConverter extends DefaultAccessTokenConverter {
 
     /**
      * Convert access token using the default converter and add custom claims
-     *
+     * access token type was set in the token enhancer
      * @param token          OAuth2 access token to convert
      * @param authentication authentication to convert
      */
     @Override
     public Map<String, ?> convertAccessToken(OAuth2AccessToken token, OAuth2Authentication authentication) {
-        if (token.getTokenType().equals("id_token"))
-            return convertToIdTokenMap(token);
+        if (token.getTokenType().equals(IDToken.TYPE))
+            return ((IDToken) token).toClaimsMap();
 
         var superToken = super.convertAccessToken(token, authentication);
         Claims claims = new DefaultClaims(new HashMap<>(superToken));
@@ -43,26 +43,6 @@ public class JwtTokenConverter extends DefaultAccessTokenConverter {
             claims.setIssuedAt(new Date());
 
         return jwtClaimsEnhancer.enhance(claims);
-    }
-
-    private Map<String, Object> convertToIdTokenMap(OAuth2AccessToken token) {
-        var idToken = (IDToken) token;
-        Claims claims = new DefaultClaims();
-        claims.setIssuer(idToken.getIssuer());
-        claims.setSubject(idToken.getSubject());
-        claims.setAudience(idToken.getAudience());
-        claims.setExpiration(idToken.getExpiration());
-        claims.setIssuedAt(idToken.getIssuedAt());
-        claims.put("auth_time", idToken.getAuthTime());
-        claims.put("nonce", idToken.getNonce());
-        claims.put("azp", idToken.getAuthorizedParty());
-        claims.put("at_hash", idToken.getAccessTokenHash());
-
-        for (String key : idToken.getAdditionalInformation().keySet()) {
-            claims.put(key, idToken.getAdditionalInformation().get(key));
-        }
-
-        return claims;
     }
 
     /**

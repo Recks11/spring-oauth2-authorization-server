@@ -87,7 +87,7 @@ public class Oauth2ServerApplication implements CommandLineRunner {
         registeredClient.setRefreshTokenValiditySeconds(15 * 60);
         registeredClient.setResourceIds(List.of("benoly/stock-management"));
         registeredClient.setScope(List.of("read", "write", "remove", "profile", "openid", "email"));
-        registeredClient.setRegisteredRedirectUri(Set.of("http://localhost:8000/api/me"));
+        registeredClient.setRegisteredRedirectUri(Set.of("http://localhost:8008/login/oauth2/code/"));
         registeredClient.setAuthorizedGrantTypes(List.of(REFRESH_TOKEN, PASSWORD, AUTHORIZATION_CODE));
 
         Client save = clientService.addClient(registeredClient);

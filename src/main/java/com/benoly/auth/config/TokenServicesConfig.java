@@ -22,6 +22,7 @@ import org.springframework.security.web.authentication.preauth.PreAuthenticatedA
 
 import java.security.KeyPair;
 import java.util.List;
+import java.util.Map;
 
 @Configuration
 @Slf4j
@@ -66,17 +67,16 @@ public class TokenServicesConfig {
 
     @Bean
     public JwtAccessTokenConverter tokenEnhancer() {
-        var jwtTokenEnhancer = new JwtTokenEnhancer();
+        var jwtTokenEnhancer = new JwtTokenEnhancer(keyPair, Map.of("kid", "9e96b669554474f9"));
         jwtTokenEnhancer.setAccessTokenConverter(accessTokenConverter());
-        jwtTokenEnhancer.setKeyPair(keyPair);
         return jwtTokenEnhancer;
     }
 
     @Bean
     TokenEnhancer idTokenEnhancer() {
-        var idTokenEnhancer = new IdTokenGeneratingTokenEnhancer(userService, idTokenClaimsEnhancer());
+        var idTokenEnhancer = new IdTokenGeneratingTokenEnhancer(
+                userService, idTokenClaimsEnhancer(), keyPair, Map.of("kid", "9e96b669554474f9"));
         idTokenEnhancer.setAccessTokenConverter(accessTokenConverter());
-        idTokenEnhancer.setKeyPair(keyPair);
         return idTokenEnhancer;
     }
 

@@ -21,9 +21,11 @@ public class UserInfo extends Entity {
     private String username;
 
     private String email;
+//    private boolean emailVerified;
 
     @JsonProperty("phone_number")
     private String phoneNumber;
+//    private boolean phonenumberVerified;
 
     @JsonProperty("birthdate")
     private String dataOfBirth;

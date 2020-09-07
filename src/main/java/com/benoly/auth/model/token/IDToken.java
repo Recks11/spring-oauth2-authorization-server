@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.impl.DefaultClaims;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,9 +11,11 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.common.OAuth2RefreshToken;
 
+import java.time.Instant;
 import java.util.*;
 
-import static io.jsonwebtoken.Claims.ISSUED_AT;
+import static com.benoly.auth.constants.Claims.OpenIdClaims.*;
+import static io.jsonwebtoken.Claims.*;
 import static org.springframework.security.oauth2.common.util.OAuth2Utils.CLIENT_ID;
 
 @Data
@@ -23,6 +24,7 @@ import static org.springframework.security.oauth2.common.util.OAuth2Utils.CLIENT
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class IDToken implements OAuth2AccessToken {
+    public static final String TYPE = "id_token";
     @JsonIgnore
     private String value;
     @JsonProperty("iss")
@@ -34,9 +36,9 @@ public class IDToken implements OAuth2AccessToken {
     @JsonProperty("exp")
     private Date expiry;
     @JsonProperty("iat")
-    private Date issuedAt;
+    private long issuedAt;
     @JsonProperty("auth_time")
-    private int authTime;
+    private long authTime;
     private String nonce;
     @JsonProperty("azp") // client_id
     private String authorizedParty;
@@ -50,15 +52,14 @@ public class IDToken implements OAuth2AccessToken {
         this.subject = claims.getSubject();
         this.audience = claims.getAudience();
         this.expiry = claims.getExpiration();
-        this.issuedAt = claims.containsKey(ISSUED_AT) ? claims.getIssuedAt() : new Date();
-        if (claims.containsKey("auth_time"))
-            this.authTime = claims.get("auth_time", Integer.class);
-        if (claims.containsKey("nonce"))
-            this.nonce = claims.get("nonce", String.class);
+        this.issuedAt = Instant.now().getEpochSecond();
+        this.authTime = claims.containsKey(ISSUED_AT) ? claims.getIssuedAt().getTime() : new Date(System.currentTimeMillis()).getTime();
+        if (claims.containsKey(NONCE))
+            this.nonce = claims.get(NONCE, String.class);
         if (claims.containsKey(CLIENT_ID))
             this.authorizedParty = claims.get(CLIENT_ID, String.class);
-        if (claims.containsKey("at_hash"))
-            this.accessTokenHash = claims.get("at_hash", String.class);
+        if (claims.containsKey(ACCESS_TOKEN_HASH))
+            this.accessTokenHash = claims.get(ACCESS_TOKEN_HASH, String.class);
         this.additionalInformation = new HashMap<>();
     }
 
@@ -74,12 +75,12 @@ public class IDToken implements OAuth2AccessToken {
 
     @Override
     public String getTokenType() {
-        return "id_token";
+        return TYPE;
     }
 
     @Override
     public boolean isExpired() {
-        return false;
+        return System.currentTimeMillis() > expiry.getTime();
     }
 
     @Override
@@ -89,11 +90,32 @@ public class IDToken implements OAuth2AccessToken {
 
     @Override
     public int getExpiresIn() {
-        return 0;
+        return (int) (getExpiration().getTime() - System.currentTimeMillis());
     }
 
     @Override
     public String getValue() {
         return null;
+    }
+
+    public Map<String, Object> toClaimsMap() {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put(ISSUER, this.getIssuer());
+        claims.put(SUBJECT, this.getSubject());
+        claims.put(AUDIENCE, this.getAudience());
+        claims.put(EXPIRATION, this.getExpiration());
+        claims.put(ISSUED_AT, this.getIssuedAt());
+        claims.put(AUTH_TIME, this.getAuthTime());
+        if (getNonce() != null)
+            claims.put(NONCE, this.getNonce());
+        if (getAuthorizedParty() != null)
+            claims.put(AUTHORIZED_PARTY, this.getAuthorizedParty());
+        claims.put(ACCESS_TOKEN_HASH, this.getAccessTokenHash());
+
+        for (String key : this.getAdditionalInformation().keySet()) {
+            claims.put(key, this.getAdditionalInformation().get(key));
+        }
+
+        return claims;
     }
 }
