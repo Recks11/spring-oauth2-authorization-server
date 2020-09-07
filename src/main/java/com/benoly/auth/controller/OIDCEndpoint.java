@@ -24,14 +24,14 @@ public class OIDCEndpoint {
     @Autowired
     private JWKSet jwkSet;
 
-    @RequestMapping("/.well-known/openid-configuration")
+    @RequestMapping("/openid/.well-known/openid-configuration")
     public ResponseEntity<OIDCDiscovery> openIdDiscovery() {
         OIDCDiscovery oidcDiscovery = new OIDCDiscovery();
         oidcDiscovery.setIssuer(issuer);
         return new ResponseEntity<>(oidcDiscovery, HttpStatus.OK);
     }
 
-    @GetMapping("/.well-known/jwks.json")
+    @GetMapping("/openid/.well-known/jwks.json")
     @ResponseBody
     public Map<String, Object> jwkKeys() {
         return jwkSet.toJSONObject();

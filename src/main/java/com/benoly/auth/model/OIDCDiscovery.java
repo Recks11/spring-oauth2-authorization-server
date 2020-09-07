@@ -19,7 +19,7 @@ import static com.benoly.auth.constants.GrantTypes.IMPLICIT;
 public class OIDCDiscovery {
     @JsonIgnore
     private String BASE_URI = "http://127.0.0.1:8000";
-    private String issuer = "http://127.0.0.1:8000";
+    private String issuer = "http://127.0.0.1:8000/openid";
     private String tokenEndpoint = BASE_URI + "/oauth/token";
     private String tokenKeyEndpoint = BASE_URI + "/oauth/token_key";
     private String authorizationEndpoint = BASE_URI + "/oauth/authorize";
@@ -31,9 +31,8 @@ public class OIDCDiscovery {
     private Set<String> idTokenSigningAlgValuesSupported = Set.of("RS256");
     private Set<String> token_endpoint_auth_signing_alg_values_supported = Set.of("RS256");
 
-    private String jwksUri = BASE_URI + "/.well-known/jwks.json";
+    private String jwksUri = issuer + "/.well-known/jwks.json";
     private String revocationEndpoint = BASE_URI + "/oauth/revoke";
-    private String profilesEndpoint = "";
     private Set<String> scopesSupported = Set.of("openid", "profile", "email", "read", "write");
     private Set<String> subjectTypesSupported = Set.of("public", "pairwise");
     private Set<String> responseTypesSupported = Set.of("code", "token");
