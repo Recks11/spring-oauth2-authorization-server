@@ -5,10 +5,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 
 public class ObjectUtils {
     private static final ObjectMapper objectMapper = new ObjectMapper();
+
     /**
      * Helper method to apply a function on an object if it is not null or empty.
      * The object if not null is then passed as a parameter in the function.
@@ -35,14 +37,18 @@ public class ObjectUtils {
     /**
      * Utility method to remove null elements from map
      */
-    public static <T> void cleanMap(Map<String, T> originalMap) {
-        originalMap.keySet()
-                .parallelStream()
-                .filter(s -> originalMap.get(s) == null)
-                .forEach(originalMap::remove);
+    public static <T> Map<String, Object> cleanMap(Map<String, T> map) {
+        Map<String, Object> returnedMap = new ConcurrentHashMap<>();
+        for (String key : map.keySet())
+            if (map.get(key) != null)
+                returnedMap.put(key, map.get(key));
+
+        return returnedMap;
     }
 
     public static <T> Map<String, Object> toMap(T object) {
-        return objectMapper.convertValue(object, new TypeReference<>(){});
+        return objectMapper.convertValue(object, new TypeReference<>() {});
     }
+
+
 }

@@ -1,17 +1,15 @@
-package com.benoly.auth.model;
+package com.benoly.auth.config;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.PropertySource;
 
 import java.util.Set;
 
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 @ConfigurationProperties(prefix = "oauth2.openid.discovery")
-@PropertySource(value = "classpath:oidcdiscovery.yml")
 public class OIDCDiscovery {
     @JsonIgnore
     private String baseUri;

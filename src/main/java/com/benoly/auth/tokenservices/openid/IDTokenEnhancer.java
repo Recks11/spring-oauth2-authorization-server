@@ -13,7 +13,7 @@ public class IDTokenEnhancer implements IDTokenClaimsEnhancer {
     public Map<String, Object> enhance(Map<String, Object> originalClaims) {
         return originalClaims;
     }
-
+//TODO update to use oidc userinfo
     @Override
     public void addProfileClaims(Map<String, Object> originalClaims, UserDetails user) {
         var profile = getUserFromUserDetails(user, User.class).getUserInfo();

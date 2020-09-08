@@ -10,6 +10,7 @@ import org.springframework.security.oauth2.core.oidc.OidcIdToken;
 
 import java.util.*;
 
+import static com.benoly.auth.util.ObjectUtils.cleanMap;
 import static com.benoly.auth.util.TokenUtils.toOpenIdCompliantMap;
 import static org.springframework.security.oauth2.core.oidc.endpoint.OidcParameterNames.ID_TOKEN;
 
@@ -65,7 +66,8 @@ public class IDToken implements OAuth2AccessToken {
         return null;
     }
 
-    public Map<String, Object> getClaims() {
-        return toOpenIdCompliantMap(this.getToken().getClaims());
+    public synchronized Map<String, Object> getClaims() {
+        Map<String, Object> cleanedMapCopy = cleanMap(getToken().getClaims());
+        return toOpenIdCompliantMap(cleanedMapCopy);
     }
 }

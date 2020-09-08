@@ -1,8 +1,7 @@
 package com.benoly.auth.controller;
 
-import com.benoly.auth.model.OIDCDiscovery;
+import com.benoly.auth.config.OIDCDiscovery;
 import com.nimbusds.jose.jwk.JWKSet;
-import org.springframework.beans.factory.config.YamlPropertiesFactoryBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.provider.endpoint.FrameworkEndpoint;

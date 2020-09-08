@@ -10,7 +10,10 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.Instant;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.Base64;
+import java.util.Date;
+import java.util.Map;
+import java.util.UUID;
 
 public class TokenUtils {
     public static String serializeAuthentication(@NonNull OAuth2Authentication auth2Authentication) {
@@ -54,8 +57,7 @@ public class TokenUtils {
                 .digest(value.getBytes(StandardCharsets.US_ASCII));
     }
 
-    public static Map<String, Object> toOpenIdCompliantMap(Map<String, Object> claimsMap) {
-        Map<String, Object> mutableMap = new HashMap<>(claimsMap);
+    public static Map<String, Object> toOpenIdCompliantMap(Map<String, Object> mutableMap) {
         mutableMap.keySet()
                 .parallelStream()
                 .forEach(key -> {

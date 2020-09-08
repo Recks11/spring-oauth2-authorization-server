@@ -9,9 +9,11 @@ spring:
       password: ideapass
       database: authserver
 
-
 #security:
 #  oauth2:
 #    authorization:
 #      jwt:
+logging:
+  level:
+    root: debug
 #        key-value:

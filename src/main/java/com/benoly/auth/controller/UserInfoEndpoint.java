@@ -66,9 +66,8 @@ public class UserInfoEndpoint {
         UserInfo userInfo = user.getUserInfo();
         Map<String, Object> userInfoMap = toMap(userInfo);
         userInfoMap.put(SUBJECT, subject);
-        cleanMap(userInfoMap);
 
-        return userInfoMap;
+        return cleanMap(userInfoMap);
     }
 
     @ExceptionHandler(InvalidTokenException.class)
