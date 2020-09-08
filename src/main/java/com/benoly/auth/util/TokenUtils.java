@@ -11,8 +11,8 @@ import java.security.NoSuchAlgorithmException;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.Base64;
-import java.util.Date;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
 public class TokenUtils {
@@ -63,13 +63,12 @@ public class TokenUtils {
                 .forEach(key -> {
                     if (mutableMap.get(key) instanceof Instant) {
                         Instant instant = (Instant) mutableMap.get(key);
-                        mutableMap.put(key, new Date(instant.toEpochMilli()));
+                        mutableMap.put(key, instant.getEpochSecond());
                     }
 
                     if (mutableMap.get(key) instanceof LocalDate) {
                         LocalDate localDate = (LocalDate) mutableMap.get(key);
-                        String date = localDate.toString();
-                        mutableMap.put(key, date);
+                        mutableMap.put(key, localDate.toString());
                     }
 
                     if (mutableMap.get(key) == null)
@@ -80,5 +79,10 @@ public class TokenUtils {
 
     public static String generateUUID() {
         return UUID.randomUUID().toString();
+    }
+
+    public static String getTokenFromAuthorizationHeader(String authorization) {
+        Objects.requireNonNull(authorization);
+        return authorization.substring(7);
     }
 }

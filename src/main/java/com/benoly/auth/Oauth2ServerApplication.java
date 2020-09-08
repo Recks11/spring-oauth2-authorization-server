@@ -22,7 +22,10 @@ import static com.benoly.auth.constants.GrantTypes.*;
 
 @Slf4j
 @SpringBootApplication
-@ConfigurationPropertiesScan("com.benoly.auth.config")
+@ConfigurationPropertiesScan({
+        "com.benoly.auth.config",
+        "com.benoly.auth.tokenservices"
+})
 public class Oauth2ServerApplication implements CommandLineRunner {
 
     private final UserRepository userRepository;

@@ -13,7 +13,7 @@ spring:
 #  oauth2:
 #    authorization:
 #      jwt:
-logging:
-  level:
-    root: debug
 #        key-value:
+#logging:
+#  level:
+#    root: debug
