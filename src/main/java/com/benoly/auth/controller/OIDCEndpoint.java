@@ -2,9 +2,7 @@ package com.benoly.auth.controller;
 
 import com.benoly.auth.model.OIDCDiscovery;
 import com.nimbusds.jose.jwk.JWKSet;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.beans.factory.config.YamlPropertiesFactoryBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.provider.endpoint.FrameworkEndpoint;
@@ -16,18 +14,18 @@ import java.util.Map;
 
 
 @FrameworkEndpoint
-@PropertySource("classpath:tokenclaims.properties")
 public class OIDCEndpoint {
+    private final JWKSet jwkSet;
+    private final OIDCDiscovery oidcDiscovery;
 
-    @Value("${auth.jwt.issuer:https://rexijie.dev}")
-    private String issuer;
-    @Autowired
-    private JWKSet jwkSet;
+    public OIDCEndpoint(JWKSet jwkSet,
+                        OIDCDiscovery oidcDiscovery) {
+        this.jwkSet = jwkSet;
+        this.oidcDiscovery = oidcDiscovery;
+    }
 
     @RequestMapping("/openid/.well-known/openid-configuration")
     public ResponseEntity<OIDCDiscovery> openIdDiscovery() {
-        OIDCDiscovery oidcDiscovery = new OIDCDiscovery();
-        oidcDiscovery.setIssuer(issuer);
         return new ResponseEntity<>(oidcDiscovery, HttpStatus.OK);
     }
 

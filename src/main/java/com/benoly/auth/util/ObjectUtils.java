@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 public class ObjectUtils {
-    private static ObjectMapper objectMapper = new ObjectMapper();
+    private static final ObjectMapper objectMapper = new ObjectMapper();
     /**
      * Helper method to apply a function on an object if it is not null or empty.
      * The object if not null is then passed as a parameter in the function.

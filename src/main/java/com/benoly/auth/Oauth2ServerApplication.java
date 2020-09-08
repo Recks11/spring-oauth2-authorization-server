@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
@@ -21,6 +22,7 @@ import static com.benoly.auth.constants.GrantTypes.*;
 
 @Slf4j
 @SpringBootApplication
+@ConfigurationPropertiesScan("com.benoly.auth.model")
 public class Oauth2ServerApplication implements CommandLineRunner {
 
     private final UserRepository userRepository;
