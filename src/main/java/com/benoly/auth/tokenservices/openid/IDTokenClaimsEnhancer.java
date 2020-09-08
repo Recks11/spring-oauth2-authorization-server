@@ -1,5 +1,6 @@
 package com.benoly.auth.tokenservices.openid;
 
+import com.benoly.auth.model.token.IDToken;
 import com.benoly.auth.tokenservices.JwtClaimsEnhancer;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -7,6 +8,7 @@ import java.util.Map;
 
 public interface IDTokenClaimsEnhancer extends JwtClaimsEnhancer {
 
+    IDToken enhanceClaims();
     void addProfileClaims(Map<String, Object> originalClaims, UserDetails user);
     void addEmailClaims(Map<String, Object> originalClaims, UserDetails user);
     void addAddressClaims(Map<String, Object> originalClaims, UserDetails user);

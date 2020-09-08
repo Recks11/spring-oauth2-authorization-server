@@ -26,8 +26,11 @@ import static com.benoly.auth.constants.Scopes.ID_SCOPE;
 import static com.benoly.auth.util.TokenUtils.getMessageDigestInstance;
 import static com.benoly.auth.util.TokenUtils.hashString;
 import static io.jsonwebtoken.Claims.AUDIENCE;
-import static org.springframework.security.oauth2.core.oidc.IdTokenClaimNames.*;
+import static org.springframework.security.oauth2.core.oidc.IdTokenClaimNames.NONCE;
 
+/**
+ * @author Rex Ijiekhuamen
+ */
 public class IdTokenGeneratingTokenEnhancer extends JwtTokenEnhancer {
 
     private final IDTokenClaimsEnhancer enhancer;

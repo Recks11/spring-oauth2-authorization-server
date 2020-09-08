@@ -3,7 +3,6 @@ package com.benoly.auth.controller;
 import com.benoly.auth.model.User;
 import com.benoly.auth.model.UserInfo;
 import com.benoly.auth.service.UserService;
-import com.fasterxml.jackson.core.type.TypeReference;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.common.exceptions.InvalidTokenException;
@@ -24,6 +23,9 @@ import static com.benoly.auth.util.ObjectUtils.cleanMap;
 import static com.benoly.auth.util.ObjectUtils.toMap;
 import static io.jsonwebtoken.Claims.SUBJECT;
 
+/**
+ * @author Rex Ijiekhuamen
+ */
 @RestController
 public class UserInfoEndpoint {
 
@@ -48,13 +50,17 @@ public class UserInfoEndpoint {
     public void setExceptionTranslator(WebResponseExceptionTranslator<OAuth2Exception> exceptionTranslator) {
         this.exceptionTranslator = exceptionTranslator;
     }
-
-    @RequestMapping("/user/info")
-    private Map<String, ?> userInfo(@RequestHeader() String authorization) {
+    /*
+     * Maybe add aggregated claims
+     * that will link to other resources
+     * https://openid.net/specs/openid-connect-core-1_0.html#UserInfo
+     */
+    @RequestMapping("/userinfo")
+    private Map<String, ?> userInfo(@RequestHeader("Authorization") String authorization) {
         String tokenValue = authorization.startsWith("Bearer ") ? authorization.substring(7) : null;
 
         OAuth2AccessToken token = resourceServerTokenServices.readAccessToken(tokenValue);
-        if (token == null) throw new InvalidTokenException("Token was not recognised");
+        if (tokenValue == null || token == null) throw new InvalidTokenException("Token was not recognised");
         if (token.isExpired()) throw new InvalidTokenException("Token has expired");
 
         OAuth2Authentication auth2Authentication = resourceServerTokenServices.loadAuthentication(token.getValue());

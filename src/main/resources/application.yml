@@ -5,7 +5,7 @@ oauth2:
       issuer: http://127.0.0.1:8000/openid
       tokenEndpoint: http://127.0.0.1:8000/oauth/token
       tokenKeyEndpoint: http://127.0.0.1:8000/oauth/token_key
-      userinfoEndpoint: http://127.0.0.1:8000/user/info
+      userinfoEndpoint: http://127.0.0.1:8000/userinfo
       checkTokenEndpoint: http://127.0.0.1:8000/oauth/check_token
       revocationEndpoint: http://127.0.0.1:8000/oauth/revoke
       authorizationEndpoint: http://127.0.0.1:8000/oauth/authorize

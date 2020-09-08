@@ -23,6 +23,7 @@ public class UserInfo extends Entity {
     private String username;
     private String email;
     private boolean emailVerified = false;
+    private OidcAddress address;
     @JsonProperty("phone_number")
     private String phoneNumber;
     @JsonProperty("phone_number_verified")
