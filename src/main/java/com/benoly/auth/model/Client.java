@@ -1,7 +1,8 @@
 package com.benoly.auth.model;
 
-import lombok.*;
-import org.codehaus.jackson.annotate.JsonProperty;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.oauth2.provider.client.BaseClientDetails;
@@ -10,7 +11,6 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Data
-@ToString(callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor
 @Document
@@ -50,5 +50,25 @@ public class Client extends BaseClientDetails {
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode());
+    }
+
+    @Override
+    public String toString() {
+        return "Client {" +
+                "id: '" + getId() + '\'' +
+                ", name: '" + getName() + '\'' +
+                " clientId: '" + this.getClientId() + '\'' +
+                ", clientSecret: '" + "[SECRET]" + '\'' +
+                ", scope: '" + this.getScope() + '\'' +
+                ", resourceIds: '" + this.getResourceIds() + '\'' +
+                ", authorizedGrantTypes: '" + this.getAuthorizedGrantTypes() + '\'' +
+                ", registeredRedirectUris: '" + this.getRegisteredRedirectUri() + '\'' +
+                ", authorities: '" + this.getAuthorities() + '\'' +
+                ", accessTokenValiditySeconds: '" + this.getAccessTokenValiditySeconds() + '\'' +
+                ", refreshTokenValiditySeconds: '" + this.getRefreshTokenValiditySeconds() + '\'' +
+                ", additionalInformation: '" + this.getAdditionalInformation() +'\'' +
+                ", createdAt: '" + getCreatedAt() + '\'' +
+                ", updatedAt: '" + getUpdatedAt() + '\'' +
+                "}";
     }
 }
