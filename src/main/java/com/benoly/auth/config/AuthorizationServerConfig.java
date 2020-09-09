@@ -17,6 +17,9 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.token.AccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 @Configuration
 @EnableAuthorizationServer
@@ -50,6 +53,16 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         security.tokenKeyAccess("isAnonymous() || hasAuthority('ROLE_CLIENT')")
                 .checkTokenAccess("hasAuthority('ROLE_CLIENT')")
                 .passwordEncoder(passwordEncoder);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        CorsConfiguration corsConfig = new CorsConfiguration();
+        corsConfig.applyPermitDefaultValues();
+
+        source.registerCorsConfiguration("/oauth/token", corsConfig);
+        CorsFilter filter = new CorsFilter(source);
+
+        security.addTokenEndpointAuthenticationFilter(filter);
+
     }
 
     @Override
@@ -65,7 +78,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 .accessTokenConverter(accessTokenConverter)
                 .authorizationCodeServices(new PersistentAuthorizationCodeServices(authorizationTokenRepository))
                 .tokenServices(tokenServices)
-                .allowedTokenEndpointRequestMethods(HttpMethod.GET, HttpMethod.POST);
+                .allowedTokenEndpointRequestMethods(HttpMethod.GET, HttpMethod.POST, HttpMethod.OPTIONS);
 
         endpoints.addInterceptor(new SessionInvalidatingHandlerInterceptor());
     }

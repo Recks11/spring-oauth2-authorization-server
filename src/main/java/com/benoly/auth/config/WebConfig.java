@@ -23,11 +23,12 @@ public class WebConfig {
         corsConfig.addAllowedMethod(HttpMethod.POST);
         corsConfig.addAllowedMethod(HttpMethod.DELETE);
         corsConfig.addAllowedMethod(HttpMethod.PUT);
-//        corsConfig.addAllowedMethod(HttpMethod.OPTIONS);
+        corsConfig.addAllowedMethod(HttpMethod.OPTIONS);
         corsConfig.addAllowedHeader("*");
         corsConfig.addAllowedOrigin("*");
         corsConfig.setAllowCredentials(true);
         source.registerCorsConfiguration("/**", corsConfig);
+        source.registerCorsConfiguration("/oauth/token", corsConfig);
 
         var bean = new FilterRegistrationBean<>(new CorsFilter(source));
         bean.setOrder(0);

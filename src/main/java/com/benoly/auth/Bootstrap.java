@@ -87,8 +87,9 @@ public class Bootstrap implements ApplicationListener<ApplicationStartedEvent> {
         registeredClient.setAccessTokenValiditySeconds(10 * 60);
         registeredClient.setRefreshTokenValiditySeconds(15 * 60);
         registeredClient.setResourceIds(List.of("benoly/stock-management"));
-        registeredClient.setScope(List.of("read", "write", "remove", "profile", "openid", "email"));
-        registeredClient.setRegisteredRedirectUri(Set.of("http://localhost:8008/login/oauth2/code/"));
+        registeredClient.setScope(List.of("read", "read:appointments", "write", "remove", "profile", "openid", "email"));
+        registeredClient.setRegisteredRedirectUri(Set.of("http://localhost:8008/login/oauth2/code/",
+                "http://localhost:3000/"));
         registeredClient.setAuthorizedGrantTypes(List.of(REFRESH_TOKEN, PASSWORD, AUTHORIZATION_CODE));
 
         Client save = clientService.addClient(registeredClient);
@@ -96,7 +97,7 @@ public class Bootstrap implements ApplicationListener<ApplicationStartedEvent> {
     }
 
     private void createUser(Role role) {
-        var user = new User("rexijie@gmail.com", "pass@rex", role);
+        var user = new User("rexijie@gmail.com", encoder.encode("pass@rex"), role);
         var profile = UserInfo.builder()
                 .firstName("Rex")
                 .lastName("Ijiekhuamen")
