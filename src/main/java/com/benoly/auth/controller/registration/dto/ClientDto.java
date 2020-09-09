@@ -1,4 +1,4 @@
-package com.benoly.auth.model.dto;
+package com.benoly.auth.controller.registration.dto;
 
 import com.benoly.auth.model.Entity;
 import com.fasterxml.jackson.annotation.JsonInclude;

@@ -13,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.UUID;
 
 import static com.benoly.auth.util.ObjectUtils.applyIfNonNull;
@@ -21,9 +22,12 @@ import static com.benoly.auth.util.ObjectUtils.applyIfNonNull;
 @Slf4j
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+    private final PasswordEncoder encoder;
 
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository,
+                           PasswordEncoder encoder) {
         this.userRepository = userRepository;
+        this.encoder = encoder;
     }
 
     @Override
@@ -57,7 +61,21 @@ public class UserServiceImpl implements UserService {
         String id = UUID.fromString(user.getUsername()).toString();
         user.setId(id);
         user.setCreatedAt(LocalDateTime.now());
+        user.setPassword(encoder.encode(user.getPassword()));
         return save(user);
+    }
+
+    @Override
+    public User getUserById(String id) {
+
+        Optional<User> userOp = userRepository.findById(id);
+        if (userOp.isEmpty()) throw new UsernameNotFoundException("user does not exist");
+            User user = userOp.get();
+            user.getRole()
+                    .getAuthorities()
+                    .add(new Authority(user.getRole().getName(), user.getRole().getDescription()));
+
+            return user;
     }
 
     @Override
@@ -72,7 +90,8 @@ public class UserServiceImpl implements UserService {
         applyIfNonNull(sentUserInfo.getFirstName(), storedInfo::setFirstName);
         applyIfNonNull(sentUserInfo.getLastName(), storedInfo::setLastName);
         applyIfNonNull(sentUserInfo.getEmail(), storedInfo::setEmail);
-        applyIfNonNull(sentUserInfo.getDataOfBirth(), storedInfo::setDataOfBirth);
+        applyIfNonNull(sentUserInfo.getDateOfBirth(), storedInfo::setDateOfBirth);
+        applyIfNonNull(sentUserInfo.getAddress(), storedInfo::setAddress);
         return update(storedUser);
     }
 

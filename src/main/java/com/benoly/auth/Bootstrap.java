@@ -96,13 +96,13 @@ public class Bootstrap implements ApplicationListener<ApplicationStartedEvent> {
     }
 
     private void createUser(Role role) {
-        var user = new User("rexijie@gmail.com", encoder.encode("pass@rex"), role);
+        var user = new User("rexijie@gmail.com", "pass@rex", role);
         var profile = UserInfo.builder()
                 .firstName("Rex")
                 .lastName("Ijiekhuamen")
                 .username(user.getUsername())
                 .email(user.getUsername())
-                .dataOfBirth(LocalDate.of(2000, 1, 30)) // random day
+                .dateOfBirth(LocalDate.of(2000, 1, 30)) // random day
                 .build();
         user.setId(generateId());
         user.setEnabled(true);

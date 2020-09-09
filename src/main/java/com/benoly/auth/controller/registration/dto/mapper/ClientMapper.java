@@ -1,7 +1,7 @@
-package com.benoly.auth.model.dto.mapper;
+package com.benoly.auth.controller.registration.dto.mapper;
 
+import com.benoly.auth.controller.registration.dto.ClientDto;
 import com.benoly.auth.model.Client;
-import com.benoly.auth.model.dto.ClientDto;
 
 public class ClientMapper {
     private ClientMapper() {}

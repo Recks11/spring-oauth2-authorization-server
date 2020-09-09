@@ -31,7 +31,7 @@ public class IDTokenEnhancer implements IDTokenClaimsEnhancer {
         originalClaims.put(FAMILY_NAME_CLAIM, profile.getLastName());
         originalClaims.put(GIVEN_NAME_CLAIM, profile.getFirstName());
         originalClaims.put(PREFERRED_USERNAME_CLAIM, profile.getUsername());
-        originalClaims.put(BIRTH_DATE_CLAIM, profile.getDataOfBirth());
+        originalClaims.put(BIRTH_DATE_CLAIM, profile.getDateOfBirth());
 
 //        OidcUserInfo.builder()
 //                .name(profile.getFullName())

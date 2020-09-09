@@ -9,5 +9,6 @@ public interface UserService extends UserDetailsService {
     UserInfo findProfileByUserId(String id);
     UserInfo findProfileByUsername(String username);
     User addUser(User user);
+    User getUserById(String id);
     User updateUserInfo(User user);
 }

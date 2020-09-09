@@ -1,6 +1,7 @@
 package com.benoly.auth.model;
 
 import com.fasterxml.jackson.annotation.JsonRootName;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,6 +13,7 @@ import lombok.NoArgsConstructor;
 @JsonRootName("address")
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class OidcAddress {
     private String streetAddress;

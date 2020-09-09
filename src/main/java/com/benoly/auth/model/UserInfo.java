@@ -22,14 +22,14 @@ public class UserInfo extends Entity {
     @JsonProperty("preferred_username")
     private String username;
     private String email;
-    private boolean emailVerified = false;
+    private boolean emailVerified;
     private OidcAddress address;
     @JsonProperty("phone_number")
     private String phoneNumber;
     @JsonProperty("phone_number_verified")
-    private boolean phoneNumberVerified = false;
+    private boolean phoneNumberVerified;
     @JsonProperty("birthdate")
-    private LocalDate dataOfBirth;
+    private LocalDate dateOfBirth;
 
     @JsonProperty("name")
     public String getFullName() {

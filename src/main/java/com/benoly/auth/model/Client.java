@@ -57,7 +57,7 @@ public class Client extends BaseClientDetails {
         return "Client {" +
                 "id: '" + getId() + '\'' +
                 ", name: '" + getName() + '\'' +
-                " clientId: '" + this.getClientId() + '\'' +
+                ", clientId: '" + this.getClientId() + '\'' +
                 ", clientSecret: '" + "[SECRET]" + '\'' +
                 ", scope: '" + this.getScope() + '\'' +
                 ", resourceIds: '" + this.getResourceIds() + '\'' +

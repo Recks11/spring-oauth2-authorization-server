@@ -1,8 +1,8 @@
-package com.benoly.auth.controller;
+package com.benoly.auth.controller.registration.client;
 
+import com.benoly.auth.controller.registration.dto.ClientDto;
+import com.benoly.auth.controller.registration.dto.mapper.ClientMapper;
 import com.benoly.auth.model.Client;
-import com.benoly.auth.model.dto.ClientDto;
-import com.benoly.auth.model.dto.mapper.ClientMapper;
 import com.benoly.auth.service.ClientService;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpHeaders;
@@ -15,11 +15,11 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/clients")
-public class ClientRegistrationController {
+public class ClientRegistrationEndpoint {
 
     private final ClientService clientService;
 
-    public ClientRegistrationController(ClientService clientService) {
+    public ClientRegistrationEndpoint(ClientService clientService) {
         this.clientService = clientService;
     }
 
