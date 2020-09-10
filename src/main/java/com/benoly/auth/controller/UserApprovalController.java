@@ -29,9 +29,11 @@ public class UserApprovalController {
     @GetMapping("/oauth/confirm_access")
     public String confirmAccessPage(Model model) {
         AuthorizationRequest authorizationRequest = (AuthorizationRequest) model.getAttribute("authorizationRequest");
-        if (authorizationRequest == null) throw new DumbRequestException("how'd you even get here?");
+        if (authorizationRequest == null)
+            return "redirect:/oauth/login";
+
         String clientId = authorizationRequest.getClientId();
-        if (clientId == null) throw  new DumbRequestException("No client");
+        if (clientId == null) throw new DumbRequestException("No client");
         Set<String> scope = authorizationRequest.getScope();
         var client = (Client) clientService.loadClientByClientId(clientId);
 
