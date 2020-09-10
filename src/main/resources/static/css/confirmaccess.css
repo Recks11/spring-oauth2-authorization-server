@@ -1,6 +1,7 @@
 form {
     position: relative;
 }
+.form-footer {margin: 20px -20px 0 -20px;}
 .button-row {
     position: absolute;
     bottom: 30px;

@@ -63,7 +63,7 @@ public class ClientServiceImpl implements ClientService {
     public ClientDetails loadClientByClientId(String clientId) throws ClientRegistrationException {
         Client found;
         try {
-            found = clientRepository.findByClientId(clientId);
+            found = this.findByClientId(clientId);
         } catch (NoSuchClientException e) {
             throw new ClientRegistrationException("Client has not been registered");
         }

@@ -1,4 +1,4 @@
-package com.benoly.auth;
+package com.benoly.auth.init;
 
 import com.benoly.auth.model.*;
 import com.benoly.auth.repository.ClientRepository;
