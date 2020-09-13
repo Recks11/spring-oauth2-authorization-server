@@ -1,9 +1,7 @@
 package dev.rexijie.auth.service.impl;
 
 import dev.rexijie.auth.constants.GrantTypes;
-import dev.rexijie.auth.model.Authority;
-import dev.rexijie.auth.model.AuthorityEnum;
-import dev.rexijie.auth.model.Client;
+import dev.rexijie.auth.model.*;
 import dev.rexijie.auth.repository.ClientRepository;
 import dev.rexijie.auth.service.ClientService;
 import dev.rexijie.auth.service.SecretGenerator;
@@ -101,7 +99,7 @@ public class ClientServiceImpl implements ClientService {
     }
 
     private Client createDefaultClient() {
-        var defaultClient = new Client();
+        var defaultClient = new Client(null, ClientTypes.CONFIDENTIAL, ClientProfiles.WEB);
         defaultClient.setId(generateUUID());
         defaultClient.setClientId(secretGenerator.generate(8));
         defaultClient.setAccessTokenValiditySeconds(10 * 60);
@@ -121,6 +119,8 @@ public class ClientServiceImpl implements ClientService {
     private void assignNonEmptyFields(Client from, Client to) {
         ObjectUtils.applyIfNonNull(from.getId(), to::setId);
         ObjectUtils.applyIfNonNull(from.getClientName(), to::setClientName);
+        ObjectUtils.applyIfNonNull(from.getClientType(), to::setClientType);
+        ObjectUtils.applyIfNonNull(from.getClientProfile(), to::setClientProfile);
         ObjectUtils.applyIfNonNull(from.getClientId(), to::setClientId);
         ObjectUtils.applyIfNonNull(from.getClientSecret(), to::setClientSecret);
         ObjectUtils.applyIfNonNull(from.getScope(), to::setScope);
@@ -132,5 +132,17 @@ public class ClientServiceImpl implements ClientService {
         ObjectUtils.applyIfNonNull(from.getAccessTokenValiditySeconds(), to::setAccessTokenValiditySeconds);
         ObjectUtils.applyIfNonNull(from.getRefreshTokenValiditySeconds(), to::setRefreshTokenValiditySeconds);
         ObjectUtils.applyIfNonNull(from.getAdditionalInformation(), to::setAdditionalInformation);
+//        ObjectUtils.applyIfNonNull(from.getJwksuri(), to::setJwksuri);
+//        ObjectUtils.applyIfNonNull(from.getJwks(), to::setJwks);
+        ObjectUtils.applyIfNonNull(from.getLogoUri(), to::setLogoUri);
+        ObjectUtils.applyIfNonNull(from.getClientUri(), to::setClientUri);
+        ObjectUtils.applyIfNonNull(from.getPolicyUri(), to::setPolicyUri);
+        ObjectUtils.applyIfNonNull(from.getSelectorIdentifierUri(), to::setSelectorIdentifierUri);
+        ObjectUtils.applyIfNonNull(from.getSubjectType(), to::setSubjectType);
+        ObjectUtils.applyIfNonNull(from.getTokenEndpointAuthMethod(), to::setTokenEndpointAuthMethod);
+        ObjectUtils.applyIfNonNull(from.getDefaultMaxAge(), to::setDefaultMaxAge);
+        ObjectUtils.applyIfNonNull(from.isRequireAuthTime(), to::setRequireAuthTime);
+
+
     }
 }

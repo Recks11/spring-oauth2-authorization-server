@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
 
 // TODO - Update Client Object
 @Getter
@@ -29,10 +30,11 @@ public class Client extends BaseClientDetails {
     private String clientType = ClientTypes.CONFIDENTIAL.getName();
     private String clientProfile = ClientProfiles.WEB.getName();
     private String logoUri;
-    private String clientUri;
+    private String clientUri; // uri to the homepage of the client;
     private String policyUri;
 //    private String jwksUri;
 //    private String jwks;
+    private String selectorIdentifierUri; // json file showing alternate redirect uris
     private String subjectType; // subject types supported to use for requests to this client
     private String tokenEndpointAuthMethod;
     private int defaultMaxAge; // default value for max_age claim
@@ -41,9 +43,9 @@ public class Client extends BaseClientDetails {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    public Client(String id, String clientName, ClientTypes clientType,
+    public Client(String clientName, ClientTypes clientType,
                   ClientProfiles clientProfile) {
-        this.id = id;
+        this.id = UUID.randomUUID().toString();
         this.clientName = clientName;
         this.clientType = clientType == null ? ClientTypes.CONFIDENTIAL.getName() : clientType.getName();
         this.clientProfile = clientProfile == null ? ClientProfiles.WEB.getName() : clientProfile.getName();

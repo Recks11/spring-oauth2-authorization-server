@@ -78,9 +78,7 @@ public class Bootstrap implements ApplicationListener<ApplicationStartedEvent> {
     }
 
     private void createClient() {
-        var registeredClient = new Client();
-        registeredClient.setId(generateId());
-        registeredClient.setClientName("Benoly management app");
+        var registeredClient = new Client("Benoly management app", ClientTypes.CONFIDENTIAL, ClientProfiles.WEB);
         registeredClient.setClientId("management-app");
         registeredClient.setClientSecret(encoder.encode("secret"));
         registeredClient.setAccessTokenValiditySeconds(10 * 60);
