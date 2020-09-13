@@ -13,3 +13,7 @@ spring:
 #logging:
 #  level:
 #    root: debug
+oauth2:
+  openid:
+    implicit:
+      enabled: true

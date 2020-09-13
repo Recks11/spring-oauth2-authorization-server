@@ -1,6 +1,7 @@
 package dev.rexijie.auth.config;
 
 import dev.rexijie.auth.service.ClientService;
+import dev.rexijie.auth.service.SecretGenerator;
 import dev.rexijie.auth.service.UserService;
 import dev.rexijie.auth.tokenservices.DefaultJwtClaimEnhancer;
 import dev.rexijie.auth.tokenservices.JwtClaimsEnhancer;
@@ -30,13 +31,16 @@ public class TokenServicesConfig {
     private final UserService userService;
     private final KeyPair keyPair;
     private final ClientService clientService;
+    private final String kid;
 
     public TokenServicesConfig(UserService userService,
                                KeyPair keyPair,
-                               ClientService clientService) {
+                               ClientService clientService,
+                               SecretGenerator secretGenerator) {
         this.userService = userService;
         this.keyPair = keyPair;
         this.clientService = clientService;
+        this.kid = secretGenerator.generate(8);
     }
 
     @Bean
@@ -65,17 +69,26 @@ public class TokenServicesConfig {
         return tokenEnhancerChain;
     }
 
+    /**
+     * Token enhancer responsible for converting normal tokens to Jwt.
+     * This is also the AccessTokenConverter
+     */
     @Bean
     public JwtAccessTokenConverter tokenEnhancer() {
-        var jwtTokenEnhancer = new JwtTokenEnhancer(keyPair, Map.of("kid", "9e96b669554474f9"));
+        var jwtTokenEnhancer = new JwtTokenEnhancer(keyPair, Map.of("kid", kid));
         jwtTokenEnhancer.setAccessTokenConverter(accessTokenConverter());
         return jwtTokenEnhancer;
     }
 
+    /**
+     * Token enhancer responsible for generating ID tokens using normal tokens.
+     * This enhancer creates the ID token in the additional information field only.
+     * without actually modifying the token
+     */
     @Bean
     TokenEnhancer idTokenEnhancer() {
         var idTokenEnhancer = new IdTokenGeneratingTokenEnhancer(
-                userService, idTokenClaimsEnhancer(), keyPair, Map.of("kid", "9e96b669554474f9"));
+                userService, idTokenClaimsEnhancer(), keyPair, Map.of("kid", kid));
         idTokenEnhancer.setAccessTokenConverter(accessTokenConverter());
         return idTokenEnhancer;
     }

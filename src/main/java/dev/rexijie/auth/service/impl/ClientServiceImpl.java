@@ -120,7 +120,7 @@ public class ClientServiceImpl implements ClientService {
 
     private void assignNonEmptyFields(Client from, Client to) {
         ObjectUtils.applyIfNonNull(from.getId(), to::setId);
-        ObjectUtils.applyIfNonNull(from.getName(), to::setName);
+        ObjectUtils.applyIfNonNull(from.getClientName(), to::setClientName);
         ObjectUtils.applyIfNonNull(from.getClientId(), to::setClientId);
         ObjectUtils.applyIfNonNull(from.getClientSecret(), to::setClientSecret);
         ObjectUtils.applyIfNonNull(from.getScope(), to::setScope);

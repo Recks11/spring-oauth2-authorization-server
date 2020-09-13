@@ -9,6 +9,7 @@ oauth2:
       checkTokenEndpoint: ${oauth2.openid.discovery.baseUri}/oauth/check_token
       revocationEndpoint: ${oauth2.openid.discovery.baseUri}/oauth/revoke
       authorizationEndpoint: ${oauth2.openid.discovery.baseUri}/oauth/authorize
+      introspectionEndpoint: ${oauth2.openid.discovery.baseUri}/oauth/introspect
       jwksUri: ${oauth2.openid.discovery.issuer}/.well-known/jwks.json
       userinfoSigningAlgSupported:
         - RS256
@@ -29,17 +30,12 @@ oauth2:
         - code
         - token
       claimsSupported:
-        - email
-        - family_name
-        - given_name
-        - name
-        - birthdate
         - iss
         - sub
         - iat
         - azp
         - exp
-        - preffered_username
+        - scope
         - at_hash
         - c_hash
         - nonce

@@ -2,7 +2,6 @@ package dev.rexijie.auth.tokenservices;
 
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.jwt.JwtHelper;
 import org.springframework.security.jwt.crypto.sign.RsaSigner;
 import org.springframework.security.jwt.crypto.sign.Signer;
@@ -21,9 +20,8 @@ import java.security.interfaces.RSAPublicKey;
 import java.util.Base64;
 import java.util.Map;
 
-@PropertySource("classpath:tokenclaims.properties")
 public class JwtTokenEnhancer extends JwtAccessTokenConverter {
-    @Value("${auth.jwt.issuer:https://rexijie.dev}")
+    @Value("${oauth2.openid.discovery.issuer:https://rexijie.dev}")
     private String issuer;
     private final JsonParser objectMapper = JsonParserFactory.create();
     private final Signer signer;

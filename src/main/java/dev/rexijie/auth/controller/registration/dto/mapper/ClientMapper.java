@@ -9,7 +9,7 @@ public class ClientMapper {
     public static ClientDto toDto(Client client) {
         var clientDto = new ClientDto();
         clientDto.setId(client.getId());
-        clientDto.setName(client.getName());
+        clientDto.setName(client.getClientName());
         clientDto.setClientId(client.getClientId());
         clientDto.setClientSecret(clientDto.getClientSecret());
 

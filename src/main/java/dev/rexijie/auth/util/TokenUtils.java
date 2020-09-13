@@ -17,7 +17,6 @@ import java.util.UUID;
 
 public class TokenUtils {
     public static String serializeAuthentication(@NonNull OAuth2Authentication auth2Authentication) {
-        // TODO - handle null authentication
         var authenticationByteArray = SerializationUtils.serialize(auth2Authentication);
         return Base64.getEncoder().encodeToString(authenticationByteArray);
     }

@@ -37,7 +37,7 @@ public class UserApprovalController {
         Set<String> scope = authorizationRequest.getScope();
         var client = (Client) clientService.loadClientByClientId(clientId);
 
-        model.addAttribute("client_name", client.getName());
+        model.addAttribute("client_name", client.getClientName());
         model.addAttribute("scopes", scope);
 
         return "confirmaccess";

@@ -25,9 +25,9 @@ public class AuthorizationController {
         this.objectMapper = objectMapper;
     }
 
-    @GetMapping("/api/introspect")
+    @GetMapping("/oauth/introspect")
     @ResponseBody
-    public ResponseEntity<String> home(@AuthenticationPrincipal Authentication authentication) throws Exception {
+    public ResponseEntity<String> introspect(@AuthenticationPrincipal Authentication authentication) throws Exception {
         var as = objectMapper.writeValueAsString(authentication);
         return new ResponseEntity<>(as, HttpStatus.OK);
     }

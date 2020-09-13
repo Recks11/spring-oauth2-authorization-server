@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 
 import static dev.rexijie.auth.util.TokenUtils.generateUUID;
 
+// TODO - create cron to delete all expired codes
 /**
  * Custom authorization code services to persist authorization codes.
  */

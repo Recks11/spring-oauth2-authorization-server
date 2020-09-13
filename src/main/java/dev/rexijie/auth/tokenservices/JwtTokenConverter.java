@@ -17,7 +17,8 @@ import static org.springframework.security.oauth2.core.oidc.IdTokenClaimNames.AZ
 import static org.springframework.security.oauth2.provider.token.UserAuthenticationConverter.USERNAME;
 
 /**
- * Custom access token converter to add custom claims
+ * Custom access token converter to add custom claims.
+ * This token converter
  */
 public class JwtTokenConverter extends DefaultAccessTokenConverter {
 

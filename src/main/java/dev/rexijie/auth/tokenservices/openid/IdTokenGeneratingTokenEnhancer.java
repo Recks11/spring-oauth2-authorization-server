@@ -7,6 +7,7 @@ import dev.rexijie.auth.service.UserService;
 import dev.rexijie.auth.tokenservices.JwtTokenEnhancer;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.impl.DefaultClaims;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.jwt.JwtHelper;
 import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;
@@ -21,6 +22,8 @@ import java.security.MessageDigest;
 import java.time.Instant;
 import java.util.*;
 
+import static dev.rexijie.auth.constants.GrantTypes.AUTHORIZATION_CODE;
+import static dev.rexijie.auth.constants.GrantTypes.IMPLICIT;
 import static dev.rexijie.auth.util.TokenUtils.getMessageDigestInstance;
 import static dev.rexijie.auth.util.TokenUtils.hashString;
 import static io.jsonwebtoken.Claims.AUDIENCE;
@@ -33,6 +36,8 @@ public class IdTokenGeneratingTokenEnhancer extends JwtTokenEnhancer {
 
     private final IDTokenClaimsEnhancer enhancer;
     private final UserService userService;
+    @Value("${oauth2.openid.implicit.enabled}")
+    private final boolean enableImplicit = false;
 
     public IdTokenGeneratingTokenEnhancer(UserService userService,
                                           IDTokenClaimsEnhancer enhancer,
@@ -47,8 +52,15 @@ public class IdTokenGeneratingTokenEnhancer extends JwtTokenEnhancer {
     @Override
     public OAuth2AccessToken enhance(OAuth2AccessToken accessToken, OAuth2Authentication authentication) {
         OAuth2Request request = authentication.getOAuth2Request();
-        if (request.getScope().contains(Scopes.ID_SCOPE))
-            accessToken = appendIdToken(accessToken, authentication);
+
+        if (request.getScope().contains(Scopes.ID_SCOPE)) {
+            if (request.getGrantType().equals(AUTHORIZATION_CODE))
+                return appendIdToken(accessToken, authentication);
+
+            if (enableImplicit && request.getGrantType().equals(IMPLICIT))
+            return appendIdToken(accessToken, authentication);
+        }
+
         return accessToken;
     }
 

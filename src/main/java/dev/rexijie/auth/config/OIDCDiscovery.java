@@ -19,6 +19,7 @@ public class OIDCDiscovery {
     private String authorizationEndpoint;
     private String checkTokenEndpoint;
     private String userinfoEndpoint;
+    private String introspectionEndpoint;
     private String jwksUri;
     private String revocationEndpoint;
 
@@ -89,6 +90,14 @@ public class OIDCDiscovery {
 
     public void setUserinfoEndpoint(String userinfoEndpoint) {
         this.userinfoEndpoint = userinfoEndpoint;
+    }
+
+    public String getIntrospectionEndpoint() {
+        return introspectionEndpoint;
+    }
+
+    public void setIntrospectionEndpoint(String introspectionEndpoint) {
+        this.introspectionEndpoint = introspectionEndpoint;
     }
 
     public String getJwksUri() {

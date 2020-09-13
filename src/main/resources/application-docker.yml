@@ -1,0 +1,4 @@
+oauth2:
+  openid:
+    implicit:
+      enabled: ${ID_TOKEN_IMPLICIT}
