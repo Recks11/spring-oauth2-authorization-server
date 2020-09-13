@@ -1,15 +1,15 @@
 oauth2:
   openid:
     discovery:
-      baseUri: http://127.0.0.1:8000
-      issuer: http://127.0.0.1:8000/openid
-      tokenEndpoint: http://127.0.0.1:8000/oauth/token
-      tokenKeyEndpoint: http://127.0.0.1:8000/oauth/token_key
-      userinfoEndpoint: http://127.0.0.1:8000/userinfo
-      checkTokenEndpoint: http://127.0.0.1:8000/oauth/check_token
-      revocationEndpoint: http://127.0.0.1:8000/oauth/revoke
-      authorizationEndpoint: http://127.0.0.1:8000/oauth/authorize
-      jwksUri: http://127.0.0.1:8000/openid/.well-known/jwks.json
+      baseUri: ${SERVER_URL}
+      issuer: ${oauth2.openid.discovery.baseUri}/openid
+      tokenEndpoint: ${oauth2.openid.discovery.baseUri}/oauth/token
+      tokenKeyEndpoint: ${oauth2.openid.discovery.baseUri}/oauth/token_key
+      userinfoEndpoint: ${oauth2.openid.discovery.baseUri}/userinfo
+      checkTokenEndpoint: ${oauth2.openid.discovery.baseUri}/oauth/check_token
+      revocationEndpoint: ${oauth2.openid.discovery.baseUri}/oauth/revoke
+      authorizationEndpoint: ${oauth2.openid.discovery.baseUri}/oauth/authorize
+      jwksUri: ${oauth2.openid.discovery.issuer}/.well-known/jwks.json
       userinfoSigningAlgSupported:
         - RS256
       idTokenSigningAlgValuesSupported:
