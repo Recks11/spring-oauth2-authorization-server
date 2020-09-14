@@ -1,6 +1,7 @@
-package dev.rexijie.auth.model;
+package dev.rexijie.auth.model.client;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import dev.rexijie.auth.model.authority.Authority;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,7 +17,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
-// TODO - Update Client Object
+// TODO - Use some client object fields in token generation
 @Getter
 @Setter
 @AllArgsConstructor

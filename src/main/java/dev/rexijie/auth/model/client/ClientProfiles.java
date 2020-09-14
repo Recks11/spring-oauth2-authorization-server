@@ -1,4 +1,4 @@
-package dev.rexijie.auth.model;
+package dev.rexijie.auth.model.client;
 
 public enum ClientProfiles {
     WEB("web", "A confidential client running on a server"),

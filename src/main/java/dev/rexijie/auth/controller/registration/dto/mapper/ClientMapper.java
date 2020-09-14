@@ -1,7 +1,7 @@
 package dev.rexijie.auth.controller.registration.dto.mapper;
 
 import dev.rexijie.auth.controller.registration.dto.ClientDto;
-import dev.rexijie.auth.model.Client;
+import dev.rexijie.auth.model.client.Client;
 
 public class ClientMapper {
     private ClientMapper() {}

@@ -1,7 +1,11 @@
 package dev.rexijie.auth.service.impl;
 
 import dev.rexijie.auth.constants.GrantTypes;
-import dev.rexijie.auth.model.*;
+import dev.rexijie.auth.model.authority.Authority;
+import dev.rexijie.auth.model.authority.AuthorityEnum;
+import dev.rexijie.auth.model.client.Client;
+import dev.rexijie.auth.model.client.ClientProfiles;
+import dev.rexijie.auth.model.client.ClientTypes;
 import dev.rexijie.auth.repository.ClientRepository;
 import dev.rexijie.auth.service.ClientService;
 import dev.rexijie.auth.service.SecretGenerator;

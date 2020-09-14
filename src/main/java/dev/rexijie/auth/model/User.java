@@ -1,5 +1,6 @@
 package dev.rexijie.auth.model;
 
+import dev.rexijie.auth.model.authority.Role;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

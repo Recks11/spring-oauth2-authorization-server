@@ -1,4 +1,4 @@
-package dev.rexijie.auth.model;
+package dev.rexijie.auth.model.authority;
 
 public enum RoleEnum {
     USER("USER", "Standard application user"),

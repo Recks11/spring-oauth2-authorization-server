@@ -1,6 +1,7 @@
-package dev.rexijie.auth.model;
+package dev.rexijie.auth.model.authority;
 
 import dev.rexijie.auth.config.WebSecurityConfig;
+import dev.rexijie.auth.model.Identified;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

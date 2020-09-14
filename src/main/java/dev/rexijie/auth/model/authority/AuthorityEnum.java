@@ -1,4 +1,4 @@
-package dev.rexijie.auth.model;
+package dev.rexijie.auth.model.authority;
 
 public enum AuthorityEnum {
     CAN_CREATE("CAN_CREATE", "has authority to create"),

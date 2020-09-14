@@ -1,7 +1,7 @@
 package dev.rexijie.auth.controller;
 
 import dev.rexijie.auth.errors.DumbRequestException;
-import dev.rexijie.auth.model.Client;
+import dev.rexijie.auth.model.client.Client;
 import dev.rexijie.auth.service.ClientService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.oauth2.provider.AuthorizationRequest;

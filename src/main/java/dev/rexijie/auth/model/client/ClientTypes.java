@@ -1,4 +1,4 @@
-package dev.rexijie.auth.model;
+package dev.rexijie.auth.model.client;
 
 public enum ClientTypes {
     CONFIDENTIAL("confidential", "Client that can maintain the confidentiality of their client secret"),

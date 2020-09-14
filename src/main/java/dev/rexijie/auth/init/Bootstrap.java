@@ -1,7 +1,14 @@
 package dev.rexijie.auth.init;
 
 import dev.rexijie.auth.constants.GrantTypes;
-import dev.rexijie.auth.model.*;
+import dev.rexijie.auth.model.User;
+import dev.rexijie.auth.model.UserInfo;
+import dev.rexijie.auth.model.authority.Authority;
+import dev.rexijie.auth.model.authority.Role;
+import dev.rexijie.auth.model.authority.RoleEnum;
+import dev.rexijie.auth.model.client.Client;
+import dev.rexijie.auth.model.client.ClientProfiles;
+import dev.rexijie.auth.model.client.ClientTypes;
 import dev.rexijie.auth.repository.ClientRepository;
 import dev.rexijie.auth.repository.RoleRepository;
 import dev.rexijie.auth.repository.UserRepository;

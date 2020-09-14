@@ -1,9 +1,9 @@
 package dev.rexijie.auth.service.impl;
 
 import dev.rexijie.auth.errors.UserExistsException;
-import dev.rexijie.auth.model.Authority;
 import dev.rexijie.auth.model.User;
 import dev.rexijie.auth.model.UserInfo;
+import dev.rexijie.auth.model.authority.Authority;
 import dev.rexijie.auth.repository.UserRepository;
 import dev.rexijie.auth.service.UserService;
 import dev.rexijie.auth.util.ObjectUtils;

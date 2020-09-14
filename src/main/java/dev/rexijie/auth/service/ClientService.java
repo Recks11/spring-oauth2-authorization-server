@@ -1,6 +1,6 @@
 package dev.rexijie.auth.service;
 
-import dev.rexijie.auth.model.Client;
+import dev.rexijie.auth.model.client.Client;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.NoSuchClientException;
 

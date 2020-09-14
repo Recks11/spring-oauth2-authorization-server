@@ -2,7 +2,7 @@ package dev.rexijie.auth.controller.registration.client;
 
 import dev.rexijie.auth.controller.registration.dto.ClientDto;
 import dev.rexijie.auth.controller.registration.dto.mapper.ClientMapper;
-import dev.rexijie.auth.model.Client;
+import dev.rexijie.auth.model.client.Client;
 import dev.rexijie.auth.service.ClientService;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpHeaders;
