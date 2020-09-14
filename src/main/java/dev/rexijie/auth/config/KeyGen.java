@@ -4,26 +4,33 @@ import com.nimbusds.jose.JWSAlgorithm;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.KeyUse;
 import com.nimbusds.jose.jwk.RSAKey;
+import dev.rexijie.auth.model.token.KeyPairHolder;
+import dev.rexijie.auth.model.token.RSAKeyPairHolder;
+import dev.rexijie.auth.service.SecretGenerator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 import java.security.*;
-import java.security.interfaces.RSAPublicKey;
 
 @Component
 public class KeyGen {
+    private final SecretGenerator secretGenerator;
 
-    @Bean
-    public KeyPair rsaKeys() throws Exception {
-        return generateKeys();
+    public KeyGen(SecretGenerator secretGenerator) {
+        this.secretGenerator = secretGenerator;
     }
 
     @Bean
-    public JWKSet jwkSet(KeyPair keyPair) {
-        RSAKey.Builder builder = new RSAKey.Builder((RSAPublicKey) keyPair.getPublic())
+    public KeyPairHolder rsaKeys() throws Exception {
+        return new RSAKeyPairHolder(secretGenerator.generate(8), generateKeys());
+    }
+
+    @Bean
+    public JWKSet jwkSet(KeyPairHolder keyPairHolder) {
+        RSAKey.Builder builder = new RSAKey.Builder(((RSAKeyPairHolder) keyPairHolder).getPublicKey())
                 .keyUse(KeyUse.SIGNATURE)
                 .algorithm(JWSAlgorithm.RS256)
-                .keyID("9e96b669554474f9");
+                .keyID(keyPairHolder.getId());
 
         return new JWKSet(builder.build());
     }

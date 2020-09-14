@@ -1,5 +1,6 @@
 package dev.rexijie.auth.config;
 
+import dev.rexijie.auth.model.token.KeyPairHolder;
 import dev.rexijie.auth.service.ClientService;
 import dev.rexijie.auth.service.SecretGenerator;
 import dev.rexijie.auth.service.UserService;
@@ -21,24 +22,22 @@ import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenCo
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationProvider;
 
-import java.security.KeyPair;
 import java.util.List;
-import java.util.Map;
 
 @Configuration
 @Slf4j
 public class TokenServicesConfig {
     private final UserService userService;
-    private final KeyPair keyPair;
+    private final KeyPairHolder keyPairHolder;
     private final ClientService clientService;
     private final String kid;
 
     public TokenServicesConfig(UserService userService,
-                               KeyPair keyPair,
+                               KeyPairHolder keyPairHolder,
                                ClientService clientService,
                                SecretGenerator secretGenerator) {
         this.userService = userService;
-        this.keyPair = keyPair;
+        this.keyPairHolder = keyPairHolder;
         this.clientService = clientService;
         this.kid = secretGenerator.generate(8);
     }
@@ -75,7 +74,7 @@ public class TokenServicesConfig {
      */
     @Bean
     public JwtAccessTokenConverter tokenEnhancer() {
-        var jwtTokenEnhancer = new JwtTokenEnhancer(keyPair, Map.of("kid", kid));
+        var jwtTokenEnhancer = new JwtTokenEnhancer(keyPairHolder);
         jwtTokenEnhancer.setAccessTokenConverter(accessTokenConverter());
         return jwtTokenEnhancer;
     }
@@ -88,7 +87,7 @@ public class TokenServicesConfig {
     @Bean
     TokenEnhancer idTokenEnhancer() {
         var idTokenEnhancer = new IdTokenGeneratingTokenEnhancer(
-                userService, idTokenClaimsEnhancer(), keyPair, Map.of("kid", kid));
+                userService, idTokenClaimsEnhancer(), keyPairHolder);
         idTokenEnhancer.setAccessTokenConverter(accessTokenConverter());
         return idTokenEnhancer;
     }

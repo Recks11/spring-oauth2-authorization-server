@@ -1,5 +1,6 @@
 package dev.rexijie.auth.tokenservices;
 
+import dev.rexijie.auth.model.token.KeyPairHolder;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.jwt.JwtHelper;
@@ -25,13 +26,13 @@ public class JwtTokenEnhancer extends JwtAccessTokenConverter {
     private String issuer;
     private final JsonParser objectMapper = JsonParserFactory.create();
     private final Signer signer;
-    private final Map<String, String> customHeaders;
+    private final KeyPairHolder keyPairHolder;
 
-    public JwtTokenEnhancer(KeyPair keyPair, Map<String, String> customHeaders) {
+    public JwtTokenEnhancer(KeyPairHolder keyPairHolder) {
         super();
-        setKeyPair(keyPair);
-        this.signer = new RsaSigner((RSAPrivateKey) keyPair.getPrivate());
-        this.customHeaders = customHeaders;
+        this.keyPairHolder = keyPairHolder;
+        setKeyPair(keyPairHolder.getKeyPair());
+        this.signer = new RsaSigner((RSAPrivateKey) keyPairHolder.getPrivateKey());
     }
 
     @SneakyThrows
@@ -57,6 +58,7 @@ public class JwtTokenEnhancer extends JwtAccessTokenConverter {
     @Override
     protected String encode(OAuth2AccessToken accessToken, OAuth2Authentication authentication) {
         String content;
+        final Map<String, String> customHeaders;
         try {
             content = objectMapper.formatMap(
                     getAccessTokenConverter()
@@ -67,6 +69,11 @@ public class JwtTokenEnhancer extends JwtAccessTokenConverter {
         return JwtHelper.encode(
                 content,
                 signer,
-                customHeaders).getEncoded();
+                getCustomHeaders())
+                .getEncoded();
+    }
+
+    protected Map<String, String> getCustomHeaders() {
+        return Map.of("kid", keyPairHolder.getId());
     }
 }

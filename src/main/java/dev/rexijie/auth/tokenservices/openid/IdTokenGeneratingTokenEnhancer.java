@@ -3,6 +3,7 @@ package dev.rexijie.auth.tokenservices.openid;
 import dev.rexijie.auth.constants.Scopes;
 import dev.rexijie.auth.model.User;
 import dev.rexijie.auth.model.token.IDToken;
+import dev.rexijie.auth.model.token.KeyPairHolder;
 import dev.rexijie.auth.service.UserService;
 import dev.rexijie.auth.tokenservices.JwtTokenEnhancer;
 import io.jsonwebtoken.Claims;
@@ -17,7 +18,6 @@ import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.OAuth2Request;
 
 import java.nio.charset.StandardCharsets;
-import java.security.KeyPair;
 import java.security.MessageDigest;
 import java.time.Instant;
 import java.util.*;
@@ -41,9 +41,8 @@ public class IdTokenGeneratingTokenEnhancer extends JwtTokenEnhancer {
 
     public IdTokenGeneratingTokenEnhancer(UserService userService,
                                           IDTokenClaimsEnhancer enhancer,
-                                          KeyPair keyPair,
-                                          Map<String, String> headers) {
-        super(keyPair, headers);
+                                          KeyPairHolder keyPairHolder) {
+        super(keyPairHolder);
         this.userService = userService;
         this.enhancer = enhancer;
     }
