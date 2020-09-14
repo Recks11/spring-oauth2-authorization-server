@@ -54,7 +54,7 @@ public class UserInfoEndpoint {
      * that will link to other resources
      * https://openid.net/specs/openid-connect-core-1_0.html#UserInfo
      */
-    @RequestMapping("/userinfo")
+    @RequestMapping("/openid/userinfo")
     private Map<String, ?> userInfo(@RequestHeader("Authorization") String authorization) {
         String tokenValue = authorization.startsWith("Bearer ") ? authorization.substring(7) : null;
 

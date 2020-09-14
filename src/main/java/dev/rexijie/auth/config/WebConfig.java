@@ -3,10 +3,11 @@ package dev.rexijie.auth.config;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
+
+import java.util.List;
 
 @Configuration
 public class WebConfig {
@@ -19,11 +20,7 @@ public class WebConfig {
     public FilterRegistrationBean<CorsFilter> corsFilter() {
         var source = new UrlBasedCorsConfigurationSource();
         var corsConfig = new CorsConfiguration();
-        corsConfig.addAllowedMethod(HttpMethod.GET);
-        corsConfig.addAllowedMethod(HttpMethod.POST);
-        corsConfig.addAllowedMethod(HttpMethod.DELETE);
-        corsConfig.addAllowedMethod(HttpMethod.PUT);
-        corsConfig.addAllowedMethod(HttpMethod.OPTIONS);
+        corsConfig.setAllowedMethods(List.of("GET", "POST", "DELETE", "PUT", "OPTIONS"));
         corsConfig.addAllowedHeader("*");
         corsConfig.addAllowedOrigin("*");
         corsConfig.setAllowCredentials(true);

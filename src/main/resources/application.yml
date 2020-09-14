@@ -5,7 +5,7 @@ oauth2:
       issuer: ${oauth2.openid.discovery.baseUri}/openid
       tokenEndpoint: ${oauth2.openid.discovery.baseUri}/oauth/token
       tokenKeyEndpoint: ${oauth2.openid.discovery.baseUri}/oauth/token_key
-      userinfoEndpoint: ${oauth2.openid.discovery.baseUri}/userinfo
+      userinfoEndpoint: ${oauth2.openid.discovery.issuer}/userinfo
       checkTokenEndpoint: ${oauth2.openid.discovery.baseUri}/oauth/check_token
       revocationEndpoint: ${oauth2.openid.discovery.baseUri}/oauth/revoke
       authorizationEndpoint: ${oauth2.openid.discovery.baseUri}/oauth/authorize
