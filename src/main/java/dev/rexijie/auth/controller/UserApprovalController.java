@@ -5,7 +5,7 @@ import dev.rexijie.auth.model.client.Client;
 import dev.rexijie.auth.service.ClientService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.oauth2.provider.AuthorizationRequest;
-import org.springframework.stereotype.Controller;
+import org.springframework.security.oauth2.provider.endpoint.FrameworkEndpoint;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
@@ -16,7 +16,7 @@ import java.util.Set;
  * @author Rex Ijiekhuamen
  * 09 Sep 2020
  */
-@Controller
+@FrameworkEndpoint
 @SessionAttributes("authorizationRequest")
 @Slf4j
 public class UserApprovalController {

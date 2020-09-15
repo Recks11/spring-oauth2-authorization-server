@@ -1,6 +1,6 @@
 package dev.rexijie.auth.model.authority;
 
-import dev.rexijie.auth.config.WebSecurityConfig;
+import dev.rexijie.auth.constants.Authorities;
 import dev.rexijie.auth.model.Identified;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,6 +23,6 @@ public class Authority extends Identified implements GrantedAuthority {
 
     @Override
     public String getAuthority() {
-        return WebSecurityConfig.ROLE_PREFIX + name;
+        return Authorities.ROLE_PREFIX + name;
     }
 }
