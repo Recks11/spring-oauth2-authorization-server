@@ -1,0 +1,16 @@
+server:
+  port: 8000
+spring:
+  application:
+    name: REX-AUTH
+  data:
+    mongodb:
+      username: idea
+      password: ideapass
+      database: authserver
+      auto-index-creation: true
+
+oauth2:
+  openid:
+    implicit:
+      enabled: true

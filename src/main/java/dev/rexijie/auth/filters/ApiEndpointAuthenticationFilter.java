@@ -8,7 +8,6 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.common.exceptions.InvalidTokenException;
-import org.springframework.security.oauth2.provider.endpoint.FrameworkEndpointHandlerMapping;
 import org.springframework.security.oauth2.provider.token.ResourceServerTokenServices;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -30,15 +29,12 @@ public class ApiEndpointAuthenticationFilter extends OncePerRequestFilter {
 
     private final ResourceServerTokenServices tokenServices;
     private final ObjectMapper objectMapper;
-    private final FrameworkEndpointHandlerMapping endpoints;
 
     public ApiEndpointAuthenticationFilter(
             ObjectMapper objectMapper,
-            ResourceServerTokenServices resourceServerTokenServices,
-            FrameworkEndpointHandlerMapping endpoints) {
+            ResourceServerTokenServices resourceServerTokenServices) {
         this.objectMapper = objectMapper;
         this.tokenServices = resourceServerTokenServices;
-        this.endpoints = endpoints;
     }
 
     @Override
@@ -49,7 +45,7 @@ public class ApiEndpointAuthenticationFilter extends OncePerRequestFilter {
         String token;
         String path = request.getRequestURI();
 
-        if (StringUtils.hasText("Bearer") && !endpoints.getPaths().contains(path)) {
+        if (StringUtils.hasText("Bearer") && !path.startsWith("/oauth")) {
             try {
                 token = getTokenFromAuthorizationHeader(authorization);
 
