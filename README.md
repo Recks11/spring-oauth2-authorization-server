@@ -3,15 +3,15 @@ This is an OAuth2 authorization server written with Spring Boot capable of gener
 
 
 ## Endpoints
-The baseUrl is `http://127.0.0.1:8080/**`.
+The baseUrl is `http://127.0.0.1:8080/**`. but you should provide yours using the `${SERVER_URL}` environment variable.
 
 There are 4 endpoints
-- `/oauth/token` to get tokens with the password, implicit, client_credentials and refresh_token flows.
-- `/oauth/authorize` for the authorization_code flow.
-- `/oauth/check_token` to check the tokens with your resource server.
-- `/oauth/token_key` to get the public key used to verify tokens.
-- `/oauth/introspect` the introspection endpoint
-- `/userinfo` user info endpoint
+- `/oauth2/token` to get tokens with the password, implicit, client_credentials and refresh_token flows.
+- `/oauth2/authorize` for the authorization_code flow.
+- `/oauth2/check_token` to check the tokens with your resource server.
+- `/oauth2/token_key` to get the public key used to verify tokens.
+- `/oauth2/introspect` the introspection endpoint
+- `/openid/userinfo` user info endpoint
 - `/openid/.well-known/jwks.json` openid jwks_uri 
 - `/openid/.well-known/openid-configuration` openid discovery endpoint
 
