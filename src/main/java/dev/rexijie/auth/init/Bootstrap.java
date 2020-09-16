@@ -94,7 +94,8 @@ public class Bootstrap implements ApplicationListener<ApplicationStartedEvent> {
         registeredClient.setScope(List.of("read", "read:appointments", "write", "remove", "profile", "openid", "email"));
         registeredClient.setRegisteredRedirectUri(Set.of("http://localhost:8008/login/oauth2/code/",
                 "http://localhost:3000/"));
-        registeredClient.setAuthorizedGrantTypes(List.of(GrantTypes.REFRESH_TOKEN, GrantTypes.PASSWORD, GrantTypes.AUTHORIZATION_CODE));
+        registeredClient.setAuthorizedGrantTypes(
+                List.of(GrantTypes.REFRESH_TOKEN, GrantTypes.PASSWORD, GrantTypes.AUTHORIZATION_CODE, GrantTypes.IMPLICIT));
 
         Client save = clientService.addClient(registeredClient);
         log.info("added client {}", save.toString());

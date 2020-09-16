@@ -8,13 +8,16 @@ import dev.rexijie.auth.model.UserInfo;
 import dev.rexijie.auth.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 /**
  * @author Rex Ijiekhuamen
  * 09 Sep 2020
  */
-@RequestMapping("/api/user")
+@RestController
+@RequestMapping("/api/users")
 public class UserRegistrationEndpoint {
     private final UserService userService;
 
@@ -27,6 +30,11 @@ public class UserRegistrationEndpoint {
     // UserDeleteRequest
     // UserCreationRequest
     // UserDeleteRequest
+
+    @GetMapping("/principal")
+    public ResponseEntity<Object> getPrincipal(@AuthenticationPrincipal Authentication authentication) {
+        return new ResponseEntity<>(authentication, HttpStatus.OK);
+    }
 
     @PostMapping
     public ResponseEntity<User> addUser(@RequestBody UserDto userDto) {

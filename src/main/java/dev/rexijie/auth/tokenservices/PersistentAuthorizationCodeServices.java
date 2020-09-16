@@ -8,6 +8,7 @@ import org.springframework.security.oauth2.common.util.RandomValueStringGenerato
 import org.springframework.security.oauth2.common.util.SerializationUtils;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.code.AuthorizationCodeServices;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
@@ -17,6 +18,7 @@ import static dev.rexijie.auth.util.TokenUtils.generateUUID;
 /**
  * Custom authorization code services to persist authorization codes.
  */
+@Service
 public class PersistentAuthorizationCodeServices implements AuthorizationCodeServices {
 
     private final RandomValueStringGenerator generator;

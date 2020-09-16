@@ -1,4 +1,4 @@
-package dev.rexijie.auth.config;
+package dev.rexijie.auth.generators;
 
 import com.nimbusds.jose.JWSAlgorithm;
 import com.nimbusds.jose.jwk.JWKSet;

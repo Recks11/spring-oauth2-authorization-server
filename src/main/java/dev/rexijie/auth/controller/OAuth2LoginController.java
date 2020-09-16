@@ -17,11 +17,11 @@ import org.springframework.web.bind.annotation.SessionAttributes;
  */
 @FrameworkEndpoint
 @SessionAttributes("authorizationRequest")
-public class AuthorizationController {
+public class OAuth2LoginController {
 
     private final ObjectMapper objectMapper;
 
-    public AuthorizationController(ObjectMapper objectMapper) {
+    public OAuth2LoginController(ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
     }
 
