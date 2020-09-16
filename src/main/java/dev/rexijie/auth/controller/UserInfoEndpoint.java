@@ -4,6 +4,7 @@ import dev.rexijie.auth.model.User;
 import dev.rexijie.auth.model.UserInfo;
 import dev.rexijie.auth.service.UserService;
 import dev.rexijie.auth.util.ObjectUtils;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.common.exceptions.InvalidTokenException;
@@ -55,7 +56,7 @@ public class UserInfoEndpoint {
      * https://openid.net/specs/openid-connect-core-1_0.html#UserInfo
      */
     @RequestMapping("/openid/userinfo")
-    private Map<String, ?> userInfo(@RequestHeader("Authorization") String authorization) {
+    private ResponseEntity<Map<String, Object>> userInfo(@RequestHeader("Authorization") String authorization) {
         String tokenValue = authorization.startsWith("Bearer ") ? authorization.substring(7) : null;
 
         OAuth2AccessToken token = resourceServerTokenServices.readAccessToken(tokenValue);
@@ -72,7 +73,7 @@ public class UserInfoEndpoint {
         Map<String, Object> userInfoMap = ObjectUtils.toMap(userInfo);
         userInfoMap.put(SUBJECT, subject);
 
-        return ObjectUtils.cleanMap(userInfoMap);
+        return new ResponseEntity<>(ObjectUtils.cleanMap(userInfoMap), HttpStatus.OK);
     }
 
     @ExceptionHandler(InvalidTokenException.class)

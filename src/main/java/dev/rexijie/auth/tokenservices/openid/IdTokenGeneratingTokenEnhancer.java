@@ -47,7 +47,6 @@ public class IdTokenGeneratingTokenEnhancer extends JwtTokenEnhancer {
         this.enhancer = enhancer;
     }
 
-    // TODO - limit openid connect generation to authorization code and implicit flows only
     @Override
     public OAuth2AccessToken enhance(OAuth2AccessToken accessToken, OAuth2Authentication authentication) {
         OAuth2Request request = authentication.getOAuth2Request();

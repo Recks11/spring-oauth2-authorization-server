@@ -25,14 +25,14 @@ public class OAuth2LoginController {
         this.objectMapper = objectMapper;
     }
 
-    @GetMapping("/oauth/introspect")
+    @GetMapping("/oauth2/introspect")
     @ResponseBody
     public ResponseEntity<String> introspect(@AuthenticationPrincipal Authentication authentication) throws Exception {
         var as = objectMapper.writeValueAsString(authentication);
         return new ResponseEntity<>(as, HttpStatus.OK);
     }
 
-    @GetMapping("/oauth/login")
+    @GetMapping("/oauth2/login")
     public String loginPage(Model model, @RequestParam(required = false) String error) {
         if (error != null) {
             model.addAttribute("error", "BAD CREDENTIALS");
@@ -40,7 +40,7 @@ public class OAuth2LoginController {
         return "login";
     }
 
-    @GetMapping("/oauth/logout")
+    @GetMapping("/oauth2/logout")
     public String logout() {
         return "logout";
     }

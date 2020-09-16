@@ -1,6 +1,8 @@
 package dev.rexijie.auth.config;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import dev.rexijie.auth.filters.ApiEndpointAuthenticationFilter;
 import dev.rexijie.auth.service.UserService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -11,6 +13,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.provider.token.ResourceServerTokenServices;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -22,11 +26,18 @@ import java.util.List;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
+    private final ObjectMapper objectMapper;
+    private final ResourceServerTokenServices resourceServerTokenServices;
 
     public WebSecurityConfig(UserService userService,
-                             PasswordEncoder passwordEncoder) {
+                             PasswordEncoder passwordEncoder,
+                             ObjectMapper objectMapper,
+                             ResourceServerTokenServices tokenServices
+                             ) {
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;
+        this.objectMapper = objectMapper;
+        this.resourceServerTokenServices = tokenServices;
     }
 
     /**
@@ -41,18 +52,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .antMatchers("/api/**")
                 .authenticated()
-                .antMatchers().permitAll()
+                .antMatchers("/oauth/authorize").denyAll()
                 .and()
                 .cors().configurationSource(corsConfigurationSource())
                 .and().authorizeRequests().anyRequest().authenticated();
 
 
         http.formLogin()
-                .loginPage("/oauth/login").permitAll()
+                .loginPage("/oauth2/login").permitAll()
                 .and()
                 .logout()
-                .logoutUrl("/oauth/logout").permitAll();
+                .logoutUrl("/oauth2/logout").permitAll();
 
+        http.addFilterBefore(new ApiEndpointAuthenticationFilter(objectMapper, resourceServerTokenServices),
+                UsernamePasswordAuthenticationFilter.class);
     }
 
     @Bean
@@ -65,7 +78,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         corsConfig.addAllowedOrigin("*");
         corsConfig.setAllowCredentials(true);
         source.registerCorsConfiguration("/**", corsConfig);
-        source.registerCorsConfiguration("/oauth/token", corsConfig);
+        source.registerCorsConfiguration("/oauth2/token", corsConfig);
 
         return source;
     }

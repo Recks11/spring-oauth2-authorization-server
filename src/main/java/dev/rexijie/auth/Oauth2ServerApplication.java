@@ -26,19 +26,11 @@ public class Oauth2ServerApplication {
         - Implement prompt parameter
         - implement display parameter
         - implement preferred locales
-        - implement auth_time [DONE]
         - implement max_age
         - implement context-class-reference (acr_values)
     for Dynamic Client
     TODO
-        - Implement response types
-            - id_token / i don't want to tho, implicit is annoying /
-            - code [DONE]
-            - id_token token /i don't want to tho, implicit is annnoying/
-        - Implement openid discovery [DONE / OnGoing]
         - implement dynamic registration
-        - implement userinfo endpoint [DONE]
-        - publish public keys as bare keys [Done]
         - implement Request URI (request_uri)
 
  */

@@ -23,6 +23,7 @@ import org.springframework.security.oauth2.provider.endpoint.DefaultRedirectReso
 import org.springframework.security.oauth2.provider.endpoint.RedirectResolver;
 import org.springframework.security.oauth2.provider.implicit.ImplicitTokenRequest;
 import org.springframework.security.oauth2.provider.request.DefaultOAuth2RequestValidator;
+import org.springframework.stereotype.Controller;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.HttpSessionRequiredException;
@@ -47,7 +48,7 @@ import java.util.*;
  *
  * @author Rex Ijiekhuamen
  */
-@RestController
+@Controller
 @SessionAttributes({EnhancedAuthorizationEndpoint.AUTHORIZATION_REQUEST_ATTR_NAME, EnhancedAuthorizationEndpoint.ORIGINAL_AUTHORIZATION_REQUEST_ATTR_NAME})
 public class EnhancedAuthorizationEndpoint extends AuthorizationEndpoint {
     static final String AUTHORIZATION_REQUEST_ATTR_NAME = "authorizationRequest";
@@ -83,7 +84,7 @@ public class EnhancedAuthorizationEndpoint extends AuthorizationEndpoint {
         this.tokenGranter = tokenGranter;
     }
 
-    @RequestMapping("/oauth/authorize")
+    @RequestMapping("/oauth2/authorize")
     @Override
     public ModelAndView authorize(Map<String, Object> model,
                                   @RequestParam Map<String, String> parameters,
@@ -153,7 +154,7 @@ public class EnhancedAuthorizationEndpoint extends AuthorizationEndpoint {
     }
 
     // do super
-    @RequestMapping(value = "/oauth/authorize", method = RequestMethod.POST, params = OAuth2Utils.USER_OAUTH_APPROVAL)
+    @RequestMapping(value = "/oauth2/authorize", method = RequestMethod.POST, params = OAuth2Utils.USER_OAUTH_APPROVAL)
     @Override
     public View approveOrDeny(@RequestParam Map<String, String> approvalParameters, Map<String, ?> model,
                               SessionStatus sessionStatus, Principal principal) {

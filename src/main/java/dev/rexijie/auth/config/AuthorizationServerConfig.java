@@ -72,7 +72,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         corsConfig.applyPermitDefaultValues();
         corsConfig.setMaxAge(Duration.ofMinutes(10L));
 
-        source.registerCorsConfiguration("/oauth/token", corsConfig);
+        source.registerCorsConfiguration("/oauth2/token", corsConfig);
         CorsFilter filter = new CorsFilter(source);
 
         security.addTokenEndpointAuthenticationFilter(filter);
@@ -97,6 +97,14 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 .allowedTokenEndpointRequestMethods(HttpMethod.GET, HttpMethod.POST, HttpMethod.OPTIONS);
 
         endpoints.addInterceptor(new SessionInvalidatingHandlerInterceptor());
+
+        // workaround to replace the authorize endpoint.
+        // rename all oauth mappins and deny access to /oauth/**
+        endpoints
+                .pathMapping("/oauth/check_token", "/oauth2/check_token")
+                .pathMapping("/oauth/token_key", "/oauth2/token_key")
+                .pathMapping("/oauth/token", "/oauth2/token")
+                .pathMapping("/oauth/revoke", "/oauth2/revoke");
     }
 
     // configure endpoints
