@@ -1,7 +1,6 @@
 package dev.rexijie.auth.config;
 
 
-import dev.rexijie.auth.filters.ApiEndpointAuthenticationFilter;
 import dev.rexijie.auth.service.UserService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -12,7 +11,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -24,14 +22,11 @@ import java.util.List;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
-    private final ApiEndpointAuthenticationFilter apiEndpointAuthenticationFilter;
 
     public WebSecurityConfig(UserService userService,
-                             PasswordEncoder passwordEncoder,
-                             ApiEndpointAuthenticationFilter apiEndpointAuthenticationFilter) {
+                             PasswordEncoder passwordEncoder) {
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;
-        this.apiEndpointAuthenticationFilter = apiEndpointAuthenticationFilter;
     }
 
     /**
@@ -58,7 +53,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout()
                 .logoutUrl("/oauth/logout").permitAll();
 
-        http.addFilterBefore(apiEndpointAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
     @Bean
