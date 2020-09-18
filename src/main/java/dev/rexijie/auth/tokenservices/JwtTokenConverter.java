@@ -1,24 +1,22 @@
 package dev.rexijie.auth.tokenservices;
 
 import dev.rexijie.auth.model.token.IDToken;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.impl.DefaultClaims;
 import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.token.DefaultAccessTokenConverter;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import static io.jsonwebtoken.Claims.*;
+import static io.jsonwebtoken.Claims.ISSUER;
+import static io.jsonwebtoken.Claims.SUBJECT;
 import static org.springframework.security.oauth2.core.oidc.IdTokenClaimNames.AZP;
 import static org.springframework.security.oauth2.provider.token.UserAuthenticationConverter.USERNAME;
 
 /**
  * Custom access token converter to add custom claims.
- * This token converter
+ * This token converter, it converts an OAuth2Access token to and from a Map
  */
 public class JwtTokenConverter extends DefaultAccessTokenConverter {
 
@@ -40,11 +38,7 @@ public class JwtTokenConverter extends DefaultAccessTokenConverter {
             return ((IDToken) token).getClaims();
 
         var superToken = super.convertAccessToken(token, authentication);
-        Claims claims = new DefaultClaims(new HashMap<>(superToken));
-        if (!claims.containsKey(ISSUED_AT))
-            claims.setIssuedAt(new Date());
-
-        return jwtClaimsEnhancer.enhance(claims);
+        return jwtClaimsEnhancer.enhance(new HashMap<>(superToken));
     }
 
     /**

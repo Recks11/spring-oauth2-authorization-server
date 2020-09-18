@@ -22,8 +22,8 @@ import java.security.MessageDigest;
 import java.time.Instant;
 import java.util.*;
 
-import static dev.rexijie.auth.constants.GrantTypes.AUTHORIZATION_CODE;
-import static dev.rexijie.auth.constants.GrantTypes.IMPLICIT;
+import static dev.rexijie.auth.util.TokenRequestUtils.isAuthorizationCodeRequest;
+import static dev.rexijie.auth.util.TokenRequestUtils.isImplicitRequest;
 import static dev.rexijie.auth.util.TokenUtils.getMessageDigestInstance;
 import static dev.rexijie.auth.util.TokenUtils.hashString;
 import static io.jsonwebtoken.Claims.AUDIENCE;
@@ -37,7 +37,7 @@ public class IdTokenGeneratingTokenEnhancer extends JwtTokenEnhancer {
     private final IDTokenClaimsEnhancer enhancer;
     private final UserService userService;
     @Value("${oauth2.openid.implicit.enabled}")
-    private final boolean enableImplicit = false;
+    private final boolean implicitEnabled = false;
 
     public IdTokenGeneratingTokenEnhancer(UserService userService,
                                           IDTokenClaimsEnhancer enhancer,
@@ -50,16 +50,13 @@ public class IdTokenGeneratingTokenEnhancer extends JwtTokenEnhancer {
     @Override
     public OAuth2AccessToken enhance(OAuth2AccessToken accessToken, OAuth2Authentication authentication) {
         OAuth2Request request = authentication.getOAuth2Request();
+        if (!request.getScope().contains(Scopes.ID_SCOPE))
+            return accessToken;
 
-        if (request.getScope().contains(Scopes.ID_SCOPE)) {
-            if (request.getGrantType().equals(AUTHORIZATION_CODE))
-                return appendIdToken(accessToken, authentication);
-
-            if (enableImplicit && request.getGrantType().equals(IMPLICIT))
+        if (isAuthorizationCodeRequest(request) || (implicitEnabled && isImplicitRequest(request)))
             return appendIdToken(accessToken, authentication);
-        }
 
-        return accessToken;
+        return accessToken; // return normal token for other grant types
     }
 
     /**
@@ -76,12 +73,11 @@ public class IdTokenGeneratingTokenEnhancer extends JwtTokenEnhancer {
     private OAuth2AccessToken appendIdToken(OAuth2AccessToken accessToken, OAuth2Authentication authentication) {
         OAuth2Request request = authentication.getOAuth2Request();
 
-        DefaultOAuth2AccessToken token = (DefaultOAuth2AccessToken) accessToken;
         String nonce = request.getRequestParameters().get(NONCE);
         Claims accessTokenClaims = new DefaultClaims(super.decode(accessToken.getValue()));
         accessTokenClaims.put(AUDIENCE, request.getClientId());
 
-        OidcIdToken.Builder builder = OidcIdToken.withTokenValue(token.getValue())
+        OidcIdToken.Builder builder = OidcIdToken.withTokenValue(accessToken.getValue())
                 .issuer(accessTokenClaims.getIssuer())
                 .subject(accessTokenClaims.getSubject())
                 .audience(Set.of(accessTokenClaims.getAudience()))
@@ -104,11 +100,14 @@ public class IdTokenGeneratingTokenEnhancer extends JwtTokenEnhancer {
         if (request.getScope().contains(Scopes.IDTokenScopes.EMAIL))
             builder.claims(claimsMap -> enhancer.addEmailClaims(claimsMap, user));
 
-        OidcIdToken idToken = builder.build();
+        OidcIdToken oidcIdToken = builder.build();
+        IDToken idToken = new IDToken(oidcIdToken);
 
-        String idTokenString = super.encode(new IDToken(idToken), authentication);
+        String idTokenString = super.encode(idToken, authentication);
 
+        DefaultOAuth2AccessToken token = (DefaultOAuth2AccessToken) accessToken;
         token.setAdditionalInformation(Map.of(IDToken.TYPE, idTokenString));
+
         return token;
     }
 

@@ -42,6 +42,9 @@ import java.net.URI;
 import java.security.Principal;
 import java.util.*;
 
+import static dev.rexijie.auth.util.TokenRequestUtils.isIdTokenRequest;
+import static dev.rexijie.auth.util.TokenRequestUtils.isImplicitRequest;
+
 /**
  * Extension of springs {@link AuthorizationEndpoint} that supports the generation of ID tokens
  * according to the OpenID spec.
@@ -134,7 +137,7 @@ public class EnhancedAuthorizationEndpoint extends AuthorizationEndpoint {
                     return new ModelAndView(getAuthorizationCodeResponse(authorizationRequest, (Authentication) principal));
                 }
 
-                return getIdTokenGrantResponse(authorizationRequest, (Authentication) principal);
+                return getIdTokenGrantResponse(authorizationRequest);
             }
 
             // Store authorizationRequest AND an immutable Map of authorizationRequest in session
@@ -201,7 +204,7 @@ public class EnhancedAuthorizationEndpoint extends AuthorizationEndpoint {
             if (responseTypes.contains("code"))
                 return getAuthorizationCodeResponse(authorizationRequest, (Authentication) principal);
 
-            return getIdTokenGrantResponse(authorizationRequest, (Authentication) principal).getView();
+            return getIdTokenGrantResponse(authorizationRequest).getView();
         } finally {
             sessionStatus.setComplete();
         }
@@ -275,8 +278,7 @@ public class EnhancedAuthorizationEndpoint extends AuthorizationEndpoint {
      * gets the response model and view containing the Tokens for the implicit grant.
      * the actual URL generation is done in the call to append
      */
-    private ModelAndView getIdTokenGrantResponse(AuthorizationRequest authorizationRequest,
-                                                 Authentication principal) {
+    private ModelAndView getIdTokenGrantResponse(AuthorizationRequest authorizationRequest) {
         try {
 
             OAuth2AccessToken token = getTokenFromImplicitGrant(authorizationRequest);
@@ -348,8 +350,8 @@ public class EnhancedAuthorizationEndpoint extends AuthorizationEndpoint {
         }
     }
 
-    // generate the suthorization code url fragment. The ID token should be appended here
-    // TODO - impliment c_hash claim to ID_token
+    // generate the authorization code url fragment. The ID token should be appended here
+    // TODO - implement c_hash claim to ID_token
     private String getSuccessfulRedirect(AuthorizationRequest authorizationRequest, String authorizationCode, OAuth2AccessToken token) {
 
         if (authorizationCode == null) {
@@ -358,7 +360,7 @@ public class EnhancedAuthorizationEndpoint extends AuthorizationEndpoint {
 
         boolean fragmentUrl = false;
 
-        Map<String, String> query = new LinkedHashMap<String, String>();
+        Map<String, String> query = new LinkedHashMap<>();
         query.put("code", authorizationCode);
 
         String state = authorizationRequest.getState();
@@ -403,8 +405,8 @@ public class EnhancedAuthorizationEndpoint extends AuthorizationEndpoint {
     private String appendAccessToken(AuthorizationRequest authorizationRequest, OAuth2AccessToken accessToken) {
         Set<String> responseTypes = authorizationRequest.getResponseTypes();
 
-        Map<String, String> keys = new HashMap<String, String>();
-        Map<String, Object> vars = new LinkedHashMap<String, Object>();
+        Map<String, String> keys = new HashMap<>();
+        Map<String, Object> vars = new LinkedHashMap<>();
 
         if (containsOnly(responseTypes, "id_token")) { // handle response type id_token
             vars.put("id_token", accessToken.getAdditionalInformation().get("id_token"));
@@ -453,7 +455,7 @@ public class EnhancedAuthorizationEndpoint extends AuthorizationEndpoint {
     }
 
     Map<String, Object> unmodifiableMap(AuthorizationRequest authorizationRequest) {
-        Map<String, Object> authorizationRequestMap = new HashMap<String, Object>();
+        Map<String, Object> authorizationRequestMap = new HashMap<>();
 
         authorizationRequestMap.put(OAuth2Utils.CLIENT_ID, authorizationRequest.getClientId());
         authorizationRequestMap.put(OAuth2Utils.STATE, authorizationRequest.getState());
@@ -498,7 +500,7 @@ public class EnhancedAuthorizationEndpoint extends AuthorizationEndpoint {
             throw new UnapprovedClientAuthenticationException("Authorization failure, and no redirect URI.", failure);
         }
 
-        Map<String, String> query = new LinkedHashMap<String, String>();
+        Map<String, String> query = new LinkedHashMap<>();
 
         query.put("error", failure.getOAuth2ErrorCode());
         query.put("error_description", failure.getMessage());
@@ -628,13 +630,6 @@ public class EnhancedAuthorizationEndpoint extends AuthorizationEndpoint {
         return collection.size() == 1 && collection.contains(item);
     }
 
-    private boolean isIdTokenRequest(AuthorizationRequest authorizationRequest) {
-        return authorizationRequest.getResponseTypes().contains("id_token");
-    }
-
-    private boolean isImplicitRequest(AuthorizationRequest authorizationRequest) {
-        return authorizationRequest.getResponseTypes().contains("token");
-    }
 
     @ExceptionHandler(ClientRegistrationException.class)
     public ModelAndView handleClientRegistrationException(Exception e, ServletWebRequest webRequest) throws Exception {
@@ -662,11 +657,11 @@ public class EnhancedAuthorizationEndpoint extends AuthorizationEndpoint {
         ResponseEntity<OAuth2Exception> translate = getExceptionTranslator().translate(e);
         webRequest.getResponse().setStatus(translate.getStatusCode().value());
 
-        if (e instanceof ClientAuthenticationException || e instanceof RedirectMismatchException) {
+        if (e instanceof ClientAuthenticationException) {
             return new ModelAndView(errorPage, Collections.singletonMap("error", translate.getBody()));
         }
 
-        AuthorizationRequest authorizationRequest = null;
+        AuthorizationRequest authorizationRequest;
         try {
             authorizationRequest = getAuthorizationRequestForError(webRequest);
             String requestedRedirectParam = authorizationRequest.getRequestParameters().get(OAuth2Utils.REDIRECT_URI);
@@ -695,7 +690,7 @@ public class EnhancedAuthorizationEndpoint extends AuthorizationEndpoint {
             return authorizationRequest;
         }
 
-        Map<String, String> parameters = new HashMap<String, String>();
+        Map<String, String> parameters = new HashMap<>();
         Map<String, String[]> map = webRequest.getParameterMap();
         for (String key : map.keySet()) {
             String[] values = map.get(key);

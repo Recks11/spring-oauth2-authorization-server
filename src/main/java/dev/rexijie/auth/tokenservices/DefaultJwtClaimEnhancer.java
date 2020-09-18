@@ -5,7 +5,10 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.impl.DefaultClaims;
 import org.springframework.beans.factory.annotation.Value;
 
+import java.util.Date;
 import java.util.Map;
+
+import static io.jsonwebtoken.Claims.ISSUED_AT;
 
 public class DefaultJwtClaimEnhancer implements JwtClaimsEnhancer {
     @Value("${oauth2.openid.discovery.issuer:https://rexijie.dev}")
@@ -25,6 +28,8 @@ public class DefaultJwtClaimEnhancer implements JwtClaimsEnhancer {
         var user = userService.findUserByUsername(userName);
         var role = user.getRole().getName();
 
+        if (!claims.containsKey(ISSUED_AT))
+            claims.setIssuedAt(new Date());
         claims.setSubject(userName);
         claims.setIssuer(issuer);
         claims.put(dev.rexijie.auth.constants.Claims.JwtClaims.ROLE_CLAIM, role);
