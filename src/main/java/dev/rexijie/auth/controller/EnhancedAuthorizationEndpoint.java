@@ -44,7 +44,9 @@ import java.util.*;
 
 /**
  * Extension of springs {@link AuthorizationEndpoint} that supports the generation of ID tokens
- * according to the OpenID spec
+ * according to the OpenID spec.
+ * 90% of this class is taken from the {@link AuthorizationEndpoint} with a few tweaks to support more
+ * response_types
  *
  * @author Rex Ijiekhuamen
  */
@@ -56,11 +58,6 @@ public class EnhancedAuthorizationEndpoint extends AuthorizationEndpoint {
     static final String ORIGINAL_AUTHORIZATION_REQUEST_ATTR_NAME = "org.springframework.security.oauth2.provider.endpoint.AuthorizationEndpoint.ORIGINAL_AUTHORIZATION_REQUEST";
 
     private AuthorizationCodeServices authorizationCodeServices;
-
-    final
-    ClientService clientService;
-    final
-    TokenGranter tokenGranter;
 
     private RedirectResolver redirectResolver = new DefaultRedirectResolver();
 
@@ -76,12 +73,11 @@ public class EnhancedAuthorizationEndpoint extends AuthorizationEndpoint {
 
     private final Object implicitLock = new Object();
 
-    public EnhancedAuthorizationEndpoint(AuthorizationCodeServices authorizationCodeServices, ClientService clientService, TokenGranter tokenGranter) {
+    public EnhancedAuthorizationEndpoint(AuthorizationCodeServices authorizationCodeServices,
+                                         ClientService clientService, TokenGranter tokenGranter) {
         setAuthorizationCodeServices(authorizationCodeServices);
         setClientDetailsService(clientService);
         setTokenGranter(tokenGranter);
-        this.clientService = clientService;
-        this.tokenGranter = tokenGranter;
     }
 
     @RequestMapping("/oauth2/authorize")
@@ -353,6 +349,7 @@ public class EnhancedAuthorizationEndpoint extends AuthorizationEndpoint {
     }
 
     // generate the suthorization code url fragment. The ID token should be appended here
+    // TODO - impliment c_hash claim to ID_token
     private String getSuccessfulRedirect(AuthorizationRequest authorizationRequest, String authorizationCode, OAuth2AccessToken token) {
 
         if (authorizationCode == null) {

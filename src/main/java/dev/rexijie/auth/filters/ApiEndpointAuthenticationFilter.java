@@ -19,7 +19,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import static dev.rexijie.auth.util.TokenUtils.getTokenFromAuthorizationHeader;
 
@@ -29,12 +31,16 @@ public class ApiEndpointAuthenticationFilter extends OncePerRequestFilter {
 
     private final ResourceServerTokenServices tokenServices;
     private final ObjectMapper objectMapper;
+    private final Set<String> ignoredPaths = new HashSet<>();
 
     public ApiEndpointAuthenticationFilter(
             ObjectMapper objectMapper,
             ResourceServerTokenServices resourceServerTokenServices) {
         this.objectMapper = objectMapper;
         this.tokenServices = resourceServerTokenServices;
+        ignoredPaths.add("/oauth");
+        ignoredPaths.add("/oauth2");
+        ignoredPaths.add("/openid");
     }
 
     @Override
@@ -45,7 +51,7 @@ public class ApiEndpointAuthenticationFilter extends OncePerRequestFilter {
         String token;
         String path = request.getRequestURI();
 
-        if (StringUtils.hasText("Bearer") && !path.startsWith("/oauth")) {
+        if (StringUtils.hasText("Bearer") && !pathShouldBeIgnored(path)) {
             try {
                 token = getTokenFromAuthorizationHeader(authorization);
 
@@ -82,5 +88,11 @@ public class ApiEndpointAuthenticationFilter extends OncePerRequestFilter {
 
         response.getWriter()
                 .write(objectMapper.writeValueAsString(errorResponse));
+    }
+
+    private boolean pathShouldBeIgnored(String path) {
+        return ignoredPaths
+                .stream()
+                .anyMatch(path::startsWith);
     }
 }
