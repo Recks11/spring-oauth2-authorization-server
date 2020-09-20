@@ -10,10 +10,9 @@ spring:
       database: authserver
       auto-index-creation: true
 
-#logging:
-#  level:
-#    root: debug
 oauth2:
   openid:
+    discovery:
+      baseUri: http://127.0.0.1:8000
     implicit:
       enabled: true
