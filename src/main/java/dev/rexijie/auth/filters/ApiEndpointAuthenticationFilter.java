@@ -10,7 +10,6 @@ import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.common.exceptions.InvalidTokenException;
 import org.springframework.security.oauth2.provider.token.ResourceServerTokenServices;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -41,6 +40,9 @@ public class ApiEndpointAuthenticationFilter extends OncePerRequestFilter {
         ignoredPaths.add("/oauth");
         ignoredPaths.add("/oauth2");
         ignoredPaths.add("/openid");
+        ignoredPaths.add("/css");
+        ignoredPaths.add("/js");
+        ignoredPaths.add("/img");
     }
 
     @Override
@@ -51,7 +53,7 @@ public class ApiEndpointAuthenticationFilter extends OncePerRequestFilter {
         String token;
         String path = request.getRequestURI();
 
-        if (StringUtils.hasText("Bearer") && !pathShouldBeIgnored(path)) {
+        if ((authorization != null && authorization.contains("Bearer")) && !pathShouldBeIgnored(path)) {
             try {
                 token = getTokenFromAuthorizationHeader(authorization);
 

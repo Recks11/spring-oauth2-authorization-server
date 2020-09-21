@@ -12,7 +12,7 @@
     <link rel="icon" href="/img/favicon.ico" type="image/png">
 </head>
 <body>
-<form th:action="@{/oauth/logout}" method="post">
+<form th:action="@{/oauth2/logout}" method="post">
     <h1>LOGOUT</h1>
     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/> <br/>
     <button type="submit">Log Out</button>

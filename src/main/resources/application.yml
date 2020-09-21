@@ -3,13 +3,13 @@ oauth2:
     discovery:
       baseUri: ${SERVER_URL}
       issuer: ${oauth2.openid.discovery.baseUri}/openid
-      tokenEndpoint: ${oauth2.openid.discovery.baseUri}/oauth/token
-      tokenKeyEndpoint: ${oauth2.openid.discovery.baseUri}/oauth/token_key
+      tokenEndpoint: ${oauth2.openid.discovery.baseUri}/oauth2/token
+      tokenKeyEndpoint: ${oauth2.openid.discovery.baseUri}/oauth2/token_key
       userinfoEndpoint: ${oauth2.openid.discovery.issuer}/userinfo
-      checkTokenEndpoint: ${oauth2.openid.discovery.baseUri}/oauth/check_token
-      revocationEndpoint: ${oauth2.openid.discovery.baseUri}/oauth/revoke
-      authorizationEndpoint: ${oauth2.openid.discovery.baseUri}/oauth/authorize
-      introspectionEndpoint: ${oauth2.openid.discovery.baseUri}/oauth/introspect
+      checkTokenEndpoint: ${oauth2.openid.discovery.baseUri}/oauth2/check_token
+      revocationEndpoint: ${oauth2.openid.discovery.baseUri}/oauth2/revoke
+      authorizationEndpoint: ${oauth2.openid.discovery.baseUri}/oauth2/authorize
+      introspectionEndpoint: ${oauth2.openid.discovery.baseUri}/oauth2/introspect
       jwksUri: ${oauth2.openid.discovery.issuer}/.well-known/jwks.json
       userinfoSigningAlgSupported:
         - RS256

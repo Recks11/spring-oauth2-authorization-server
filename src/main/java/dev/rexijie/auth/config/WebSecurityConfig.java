@@ -32,8 +32,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public WebSecurityConfig(UserService userService,
                              PasswordEncoder passwordEncoder,
                              ObjectMapper objectMapper,
-                             ResourceServerTokenServices tokenServices
-                             ) {
+                             ResourceServerTokenServices tokenServices) {
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;
         this.objectMapper = objectMapper;
@@ -58,11 +57,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().authorizeRequests().anyRequest().authenticated();
 
 
-        http.formLogin()
-                .loginPage("/oauth2/login").permitAll()
-                .and()
-                .logout()
-                .logoutUrl("/oauth2/logout").permitAll();
+        http
+                .formLogin(form -> form
+                        .loginPage("/oauth2/login")
+                        .permitAll()
+                )
+                .logout(logout -> logout
+                        .logoutUrl("/oauth2/logout")
+                        .permitAll()
+                );
 
         http.addFilterBefore(new ApiEndpointAuthenticationFilter(objectMapper, resourceServerTokenServices),
                 UsernamePasswordAuthenticationFilter.class);
