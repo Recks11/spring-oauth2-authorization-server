@@ -14,6 +14,7 @@ import org.springframework.security.jwt.JwtHelper;
 import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.core.oidc.OidcIdToken;
+import org.springframework.security.oauth2.core.oidc.OidcUserInfo;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.OAuth2Request;
 
@@ -77,7 +78,7 @@ public class IdTokenGeneratingTokenEnhancer extends JwtTokenEnhancer {
         Claims accessTokenClaims = new DefaultClaims(super.decode(accessToken.getValue()));
         accessTokenClaims.put(AUDIENCE, request.getClientId());
 
-        OidcIdToken.Builder builder = OidcIdToken.withTokenValue(accessToken.getValue())
+        OidcIdToken.Builder oidcIdTokenBuilder = OidcIdToken.withTokenValue(accessToken.getValue())
                 .issuer(accessTokenClaims.getIssuer())
                 .subject(accessTokenClaims.getSubject())
                 .audience(Set.of(accessTokenClaims.getAudience()))
@@ -93,14 +94,19 @@ public class IdTokenGeneratingTokenEnhancer extends JwtTokenEnhancer {
         String username = accessTokenClaims.getSubject();
         User user = userService.findUserByUsername(username);
 
+        OidcUserInfo.Builder userInfoBuilder = OidcUserInfo.builder();
+
         if (request.getScope().contains(Scopes.IDTokenScopes.PROFILE))
-            builder.claims(claimsMap -> enhancer.addProfileClaims(claimsMap, user));
+            oidcIdTokenBuilder.claims(claimsMap -> enhancer.addProfileClaims(userInfoBuilder, user));
 
 
         if (request.getScope().contains(Scopes.IDTokenScopes.EMAIL))
-            builder.claims(claimsMap -> enhancer.addEmailClaims(claimsMap, user));
+            oidcIdTokenBuilder.claims(claimsMap -> enhancer.addEmailClaims(userInfoBuilder, user));
 
-        OidcIdToken oidcIdToken = builder.build();
+        OidcUserInfo oidcUserInfo = userInfoBuilder.build();
+        oidcIdTokenBuilder.claims(claims -> claims.putAll(oidcUserInfo.getClaims()));
+
+        OidcIdToken oidcIdToken = oidcIdTokenBuilder.build();
         IDToken idToken = new IDToken(oidcIdToken);
 
         String idTokenString = super.encode(idToken, authentication);
