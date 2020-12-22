@@ -1,0 +1,51 @@
+version: "3.1"
+
+services:
+
+  mongodb:
+    image: mongo:4.4
+    restart: always
+    volumes:
+      - type: volume
+        source: mongo-data
+        target: /data
+        volume:
+          nocopy: true
+      - type: bind
+        source: ./docker-entrypoint-initdb.d
+        target: /docker-entrypoint-initdb.d
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=root@pass
+      - MONGO_INITDB_DATABASE=authserver
+    networks:
+      - authserver
+
+  auth-server:
+    build:
+      context: ../
+      dockerfile: docker/Dockerfile
+    restart: always
+    ports:
+      - target: 8080
+        published: 8000
+        mode: host
+        protocol: tcp
+    depends_on:
+      - mongodb
+    environment:
+      - SERVER_URL=http://127.0.0.1:8000
+      - spring.profiles.active=docker
+      - ENABLE_IMPLICIT_ID_TOKEN=true
+      - MONGO_HOST=mongodb
+      - MONGO_USERNAME=idea
+      - MONGO_PASSWORD=ideapass
+      - MONGO_DATABASE=authserver
+    networks:
+      - authserver
+
+volumes:
+  mongo-data:
+
+networks:
+  authserver:

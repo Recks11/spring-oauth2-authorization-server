@@ -9,10 +9,11 @@
     <link rel="stylesheet" href="/css/confirmaccess.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&family=Slabo+27px&display=swap"
           rel="stylesheet">
+    <link rel="icon" href="/img/favicon.ico" type="image/png">
 </head>
 <body>
 <div class="form-container">
-    <form id="confirmationForm" class="form" name="confirmationForm" th:action="@{/oauth/authorize}"
+    <form id="confirmationForm" class="form" name="confirmationForm" th:action="@{/oauth2/authorize}"
           method="post">
         <h1 class="form-header">Approve Access</h1>
         <div class="form-row">
@@ -38,7 +39,7 @@
             </div>
         </div>
 
-        <div class="button-row">
+        <div class="form-footer d-flex-row f-justify-end">
             <button id="approve-button" class="button btn-primary mr10" type="submit" name="authorize">Allow</button>
             <button id="deny-button" class="button btn-secondary" type="submit" name="authorize">deny</button>
         </div>

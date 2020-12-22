@@ -8,10 +8,11 @@ spring:
       username: idea
       password: ideapass
       database: authserver
+      auto-index-creation: true
 
-
-#security:
-#  oauth2:
-#    authorization:
-#      jwt:
-#        key-value:
+oauth2:
+  openid:
+    discovery:
+      baseUri: http://127.0.0.1:8000
+    implicit:
+      enabled: true
