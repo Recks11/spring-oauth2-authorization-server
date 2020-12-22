@@ -15,10 +15,8 @@ import org.codehaus.jackson.annotate.JsonProperty;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ClientDto extends Entity {
     private String name;
-
     @JsonProperty("client_id")
     private String clientId;
-
     @JsonProperty("client_secret")
     private String clientSecret;
 }

@@ -31,7 +31,8 @@ public class IDTokenEnhancer implements IDTokenClaimsEnhancer {
                 .familyName(profile.getLastName())
                 .givenName(profile.getFirstName())
                 .preferredUsername(profile.getUsername())
-                .birthdate(profile.getDateOfBirth().toString());
+                .birthdate(profile.getDateOfBirth().toString())
+                .picture(profile.getPictureUrl());
     }
 
     @Override

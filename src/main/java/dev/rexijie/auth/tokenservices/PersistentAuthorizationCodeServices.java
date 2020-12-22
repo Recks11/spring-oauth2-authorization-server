@@ -33,7 +33,7 @@ public class PersistentAuthorizationCodeServices implements AuthorizationCodeSer
     public String createAuthorizationCode(OAuth2Authentication authentication) {
         sanitizeAuthentication(authentication);
         byte[] serializedAuthentication = SerializationUtils.serialize(authentication);
-        var token = createAuthorizationToken();
+        var token = createAuthorizationToken(authentication);
         token.setAuthentication(serializedAuthentication);
         token.setUsername(authentication.getName());
         token = authorizationTokenRepository.save(token);
@@ -65,11 +65,11 @@ public class PersistentAuthorizationCodeServices implements AuthorizationCodeSer
         return generator.generate();
     }
 
-    protected AuthorizationToken createAuthorizationToken() {
+    protected AuthorizationToken createAuthorizationToken(OAuth2Authentication authentication) {
         var id = generateUUID();
         var date = LocalDateTime.now();
         var expiryDate = date.plusMinutes(3);
-        var token = new AuthorizationToken(null, "", "", false, expiryDate);
+        var token = new AuthorizationToken(null, authentication.getName(), generateCode(), false, expiryDate);
         token.setId(id);
         token.setCode(generateCode());
         token.setCreatedAt(date);

@@ -30,6 +30,8 @@ public class UserInfo extends Entity {
     private boolean phoneNumberVerified;
     @JsonProperty("birthdate")
     private LocalDate dateOfBirth;
+    @JsonProperty("picture")
+    private String pictureUrl;
 
     @JsonProperty("name")
     public String getFullName() {

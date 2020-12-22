@@ -1,6 +1,7 @@
 package dev.rexijie.auth.init;
 
 import dev.rexijie.auth.constants.GrantTypes;
+import dev.rexijie.auth.model.OidcAddress;
 import dev.rexijie.auth.model.User;
 import dev.rexijie.auth.model.UserInfo;
 import dev.rexijie.auth.model.authority.Authority;
@@ -16,6 +17,7 @@ import dev.rexijie.auth.service.ClientService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.ApplicationListener;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -31,6 +33,7 @@ import java.util.UUID;
  */
 @Slf4j
 @Component
+@Profile("dev")
 public class Bootstrap implements ApplicationListener<ApplicationStartedEvent> {
     private final UserRepository userRepository;
     private final ClientRepository clientRepository;
@@ -98,16 +101,23 @@ public class Bootstrap implements ApplicationListener<ApplicationStartedEvent> {
                 List.of(GrantTypes.REFRESH_TOKEN, GrantTypes.PASSWORD, GrantTypes.AUTHORIZATION_CODE, GrantTypes.IMPLICIT));
 
         Client save = clientService.addClient(registeredClient);
-        log.info("added client {}", save.toString());
+        log.debug("added client {}", save.toString());
     }
 
     private void createUser(Role role) {
         var user = new User("rexijie@gmail.com", encoder.encode("pass@rex"), role);
+        var address = OidcAddress.builder()
+                .streetAddress("10 Loner Street")
+                .country("Italy")
+                .locality("Passa")
+                .region("EU")
+                .build();
         var profile = UserInfo.builder()
                 .firstName("Rex")
                 .lastName("Ijiekhuamen")
                 .username(user.getUsername())
                 .email(user.getUsername())
+                .address(address)
                 .dateOfBirth(LocalDate.of(2000, 1, 30)) // random day
                 .build();
         user.setId(generateId());
@@ -118,7 +128,7 @@ public class Bootstrap implements ApplicationListener<ApplicationStartedEvent> {
         user.setCredentialsNonExpired(true);
         user.setCreatedAt(LocalDateTime.now());
         User save = userRepository.save(user);
-        log.info("added user {}", save);
+        log.debug("added user {}", save);
     }
 
     private void logAllData() {

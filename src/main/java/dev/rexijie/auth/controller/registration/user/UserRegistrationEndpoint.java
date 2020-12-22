@@ -53,17 +53,18 @@ public class UserRegistrationEndpoint {
     }
 
     @PostMapping("/{id}")
-    public ResponseEntity<User> updateUser(@RequestBody UserInfo userInfo,
+    public ResponseEntity<UserDto> updateUser(@RequestBody UserInfo userInfo,
                                            @PathVariable("id") String id) {
         validateUserInfo(userInfo);
         User user = userService.getUserById(id);
         user.setUserInfo(userInfo);
-        userService.updateUserInfo(user);
-        return new ResponseEntity<>(user, HttpStatus.OK);
+        User updatedUser = userService.updateUserInfo(user);
+        UserDto userDto = UserMapper.toDto(updatedUser);
+        return new ResponseEntity<>(userDto, HttpStatus.OK);
     }
 
     @PostMapping("/{id}/address")
-    public ResponseEntity<User> updateUserAddress(@RequestBody OidcAddress address,
+    public ResponseEntity<UserDto> updateUserAddress(@RequestBody OidcAddress address,
                                                   @PathVariable("id") String id) {
         validateAddress(address);
         User user = userService.getUserById(id);
@@ -71,17 +72,18 @@ public class UserRegistrationEndpoint {
 
         User updatedUser = userService.updateUserInfo(user);
 
-        return new ResponseEntity<>(user, HttpStatus.OK);
+        UserDto userDto = UserMapper.toDto(updatedUser);
+        return new ResponseEntity<>(userDto, HttpStatus.OK);
     }
 
     private void validateUser(UserDto userDto) {
-
+        // TODO impliment
     }
     private void validateUserInfo(UserInfo userInfo) {
-
+        // TODO impliment
     }
 
     private void validateAddress(OidcAddress address) {
-
+        // TODO impliment
     }
 }

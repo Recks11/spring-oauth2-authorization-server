@@ -2,7 +2,6 @@ package dev.rexijie.auth.controller.registration.client;
 
 import dev.rexijie.auth.controller.registration.dto.ClientDto;
 import dev.rexijie.auth.controller.registration.dto.mapper.ClientMapper;
-import dev.rexijie.auth.model.client.Client;
 import dev.rexijie.auth.service.ClientService;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpHeaders;
@@ -11,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 // TODO - Update Client Registration
 @RestController
@@ -24,12 +24,19 @@ public class ClientRegistrationEndpoint {
     }
 
     @PostMapping
-    public ResponseEntity<ClientDto> addClient(@RequestBody Client client) {
+    public ResponseEntity<ClientDto> addClient(@RequestBody ClientRegistrationRequest clientRegistrationRequest) {
+        var client = clientRegistrationRequest.toClient();
         var savedClient = clientService.addClient(client);
         var clientDto = ClientMapper.toDto(savedClient);
         var headers = new HttpHeaders();
         headers.setCacheControl(CacheControl.noCache());
         return new ResponseEntity<>(clientDto, headers, HttpStatus.CREATED);
+    }
+
+    @PutMapping
+    public ResponseEntity<Map<String, ?>> updateClient() {
+        var status = Map.of("status", "not implimented");
+        return new ResponseEntity<>(status, HttpStatus.NOT_IMPLEMENTED);
     }
 
     @GetMapping

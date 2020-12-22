@@ -1,5 +1,6 @@
 package dev.rexijie.auth.controller.registration.dto;
 
+import dev.rexijie.auth.model.OidcAddress;
 import lombok.Builder;
 import lombok.Data;
 
@@ -17,7 +18,9 @@ public class UserDto {
     private String password;
     private String firstName;
     private String lastName;
+    private OidcAddress address;
     private String email;
     private String phone;
     private LocalDate dateOfBirth;
+    private String pictureUrl;
 }

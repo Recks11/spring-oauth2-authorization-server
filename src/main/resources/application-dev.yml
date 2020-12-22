@@ -11,6 +11,8 @@ spring:
       auto-index-creation: true
 
 oauth2:
+  server:
+    resourceid: oauth2-server
   openid:
     discovery:
       baseUri: http://127.0.0.1:8000

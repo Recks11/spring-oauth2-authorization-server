@@ -1,4 +1,6 @@
 oauth2:
+  server:
+    resourceid: ${SERVER_RESOURCE_ID}
   openid:
     discovery:
       baseUri: ${SERVER_URL}

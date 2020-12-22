@@ -99,9 +99,14 @@ public class IdTokenGeneratingTokenEnhancer extends JwtTokenEnhancer {
         if (request.getScope().contains(Scopes.IDTokenScopes.PROFILE))
             oidcIdTokenBuilder.claims(claimsMap -> enhancer.addProfileClaims(userInfoBuilder, user));
 
-
         if (request.getScope().contains(Scopes.IDTokenScopes.EMAIL))
             oidcIdTokenBuilder.claims(claimsMap -> enhancer.addEmailClaims(userInfoBuilder, user));
+
+        if (request.getScope().contains(Scopes.IDTokenScopes.ADDRESS))
+            oidcIdTokenBuilder.claims(claimsMap -> enhancer.addAddressClaims(userInfoBuilder, user));
+
+        if (request.getScope().contains(Scopes.IDTokenScopes.PHONE))
+            oidcIdTokenBuilder.claims(claimsMap -> enhancer.addPhoneClaims(userInfoBuilder, user));
 
         OidcUserInfo oidcUserInfo = userInfoBuilder.build();
         oidcIdTokenBuilder.claims(claims -> claims.putAll(oidcUserInfo.getClaims()));

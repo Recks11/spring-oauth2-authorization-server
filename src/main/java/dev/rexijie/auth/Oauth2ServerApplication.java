@@ -30,5 +30,4 @@ public class Oauth2ServerApplication {
     TODO
         - implement dynamic registration
         - implement Request URI (request_uri)
-
  */

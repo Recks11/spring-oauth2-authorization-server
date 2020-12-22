@@ -24,6 +24,9 @@ import java.util.Set;
 
 import static dev.rexijie.auth.util.TokenUtils.getTokenFromAuthorizationHeader;
 
+/**
+ * Authentication filter for the API endpoint and literally anything else
+ */
 @Slf4j
 @Component
 public class ApiEndpointAuthenticationFilter extends OncePerRequestFilter {
@@ -64,6 +67,7 @@ public class ApiEndpointAuthenticationFilter extends OncePerRequestFilter {
                 SecurityContext context = SecurityContextHolder.getContext();
                 context.setAuthentication(authentication);
             } catch (InvalidTokenException ex) {
+                SecurityContextHolder.getContext().setAuthentication(null);
                 writeErrorResponse(request, response, ex);
                 return;
             }
