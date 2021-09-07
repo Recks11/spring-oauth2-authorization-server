@@ -1,16 +1,18 @@
 server:
-  port: 8000
+  port: 9366
 spring:
   application:
-    name: REX-AUTH
+    name: REX-AUTH-TEST
   data:
     mongodb:
-      username: idea
-      password: ideapass
       database: authserver
       auto-index-creation: true
 
 oauth2:
+  server:
+    resourceid: test-oauth2-server
   openid:
+    discovery:
+      baseUri: http://127.0.0.1:${server.port}
     implicit:
       enabled: true
