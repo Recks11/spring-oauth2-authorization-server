@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.*;
 import org.codehaus.jackson.annotate.JsonProperty;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -29,16 +29,14 @@ public class UserInfo extends Entity {
     @JsonProperty("phone_number_verified")
     private boolean phoneNumberVerified;
     @JsonProperty("birthdate")
-    private LocalDate dateOfBirth;
+    private Date dateOfBirth;
     @JsonProperty("picture")
     private String pictureUrl;
 
     @JsonProperty("name")
     public String getFullName() {
-        StringBuilder sb = new StringBuilder();
-        return sb.append(firstName)
-                .append(" ")
-                .append(lastName)
-                .toString();
+        return firstName +
+                " " +
+                lastName;
     }
 }

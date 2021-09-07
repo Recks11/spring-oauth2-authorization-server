@@ -4,7 +4,7 @@ import dev.rexijie.auth.model.OidcAddress;
 import lombok.Builder;
 import lombok.Data;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 /**
  * @author Rex Ijiekhuamen
@@ -21,6 +21,6 @@ public class UserDto {
     private OidcAddress address;
     private String email;
     private String phone;
-    private LocalDate dateOfBirth;
+    private Date dateOfBirth;
     private String pictureUrl;
 }

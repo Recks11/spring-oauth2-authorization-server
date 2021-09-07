@@ -2,13 +2,13 @@ package dev.rexijie.auth.config;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import java.util.Set;
 
-@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @ConfigurationProperties(prefix = "oauth2.openid.discovery")
 public class OIDCDiscovery {
     @JsonIgnore

@@ -23,6 +23,8 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -118,7 +120,9 @@ public class Bootstrap implements ApplicationListener<ApplicationStartedEvent> {
                 .username(user.getUsername())
                 .email(user.getUsername())
                 .address(address)
-                .dateOfBirth(LocalDate.of(2000, 1, 30)) // random day
+                .dateOfBirth(Date.from(LocalDate.of(2000, 1, 30)
+                        .atStartOfDay(ZoneId.systemDefault())
+                        .toInstant())) // random day
                 .build();
         user.setId(generateId());
         user.setEnabled(true);
