@@ -2,53 +2,52 @@ oauth2:
   server:
     resourceid: ${SERVER_RESOURCE_ID}
   openid:
-    discovery:
-      baseUri: ${SERVER_URL}
-      issuer: ${oauth2.openid.discovery.baseUri}/openid
-      tokenEndpoint: ${oauth2.openid.discovery.baseUri}/oauth2/token
-      tokenKeyEndpoint: ${oauth2.openid.discovery.baseUri}/oauth2/token_key
-      userinfoEndpoint: ${oauth2.openid.discovery.issuer}/userinfo
-      checkTokenEndpoint: ${oauth2.openid.discovery.baseUri}/oauth2/check_token
-      revocationEndpoint: ${oauth2.openid.discovery.baseUri}/oauth2/revoke
-      authorizationEndpoint: ${oauth2.openid.discovery.baseUri}/oauth2/authorize
-      introspectionEndpoint: ${oauth2.openid.discovery.baseUri}/oauth2/introspect
-      jwksUri: ${oauth2.openid.discovery.issuer}/.well-known/jwks.json
-      userinfoSigningAlgSupported:
-        - RS256
-      idTokenSigningAlgValuesSupported:
-        - RS256
-      tokenEndpointAuthSigningAlgorithmsSupported:
-        - RS256
-      scopesSupported:
-        - openid
-        - profile
-        - email
-        - read
-        - write
-      subjectTypesSupported:
-        - public
-        - pairwise
-      responseTypesSupported:
-        - code
-        - token
-        - id_token
-        - code token
-        - code id_token
-        - id_token token
-        - code id_token token
-      claimsSupported:
-        - iss
-        - sub
-        - iat
-        - azp
-        - exp
-        - scope
-        - at_hash
-        - c_hash
-        - nonce
-      grantTypesSupported:
-        - authorization_code
-        - implicit
-      tokenEndpointAuthMethodsSupported:
-        - client_secret_basic
-        - client_secret_post
+    baseUri: ${SERVER_URL}
+    issuer: ${oauth2.openid.discovery.baseUri}/openid
+    tokenEndpoint: ${oauth2.openid.discovery.baseUri}/oauth2/token
+    tokenKeyEndpoint: ${oauth2.openid.discovery.baseUri}/oauth2/token_key
+    userinfoEndpoint: ${oauth2.openid.discovery.issuer}/userinfo
+    checkTokenEndpoint: ${oauth2.openid.discovery.baseUri}/oauth2/check_token
+    revocationEndpoint: ${oauth2.openid.discovery.baseUri}/oauth2/revoke
+    authorizationEndpoint: ${oauth2.openid.discovery.baseUri}/oauth2/authorize
+    introspectionEndpoint: ${oauth2.openid.discovery.baseUri}/oauth2/introspect
+    jwksUri: ${oauth2.openid.discovery.issuer}/.well-known/jwks.json
+    userinfoSigningAlgSupported:
+      - RS256
+    idTokenSigningAlgValuesSupported:
+      - RS256
+    tokenEndpointAuthSigningAlgorithmsSupported:
+      - RS256
+    scopesSupported:
+      - openid
+      - profile
+      - email
+      - read
+      - write
+    subjectTypesSupported:
+      - public
+      - pairwise
+    responseTypesSupported:
+      - code
+      - token
+      - id_token
+      - code token
+      - code id_token
+      - id_token token
+      - code id_token token
+    claimsSupported:
+      - iss
+      - sub
+      - iat
+      - azp
+      - exp
+      - scope
+      - at_hash
+      - c_hash
+      - nonce
+    grantTypesSupported:
+      - authorization_code
+      - implicit
+    tokenEndpointAuthMethodsSupported:
+      - client_secret_basic
+      - client_secret_post

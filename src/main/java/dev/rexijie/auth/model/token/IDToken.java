@@ -14,6 +14,10 @@ import java.util.*;
 
 import static org.springframework.security.oauth2.core.oidc.endpoint.OidcParameterNames.ID_TOKEN;
 
+/**
+ * OIDC Identity Token
+ */
+
 @Data
 @NoArgsConstructor
 @Builder

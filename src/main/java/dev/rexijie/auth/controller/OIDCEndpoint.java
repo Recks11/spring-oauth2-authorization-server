@@ -1,7 +1,7 @@
 package dev.rexijie.auth.controller;
 
 import com.nimbusds.jose.jwk.JWKSet;
-import dev.rexijie.auth.config.OIDCDiscovery;
+import dev.rexijie.auth.config.OAuth2Properties;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.provider.endpoint.FrameworkEndpoint;
@@ -16,17 +16,17 @@ import java.util.Map;
 @FrameworkEndpoint
 public class OIDCEndpoint {
     private final JWKSet jwkSet;
-    private final OIDCDiscovery oidcDiscovery;
+    private final OAuth2Properties oidcDiscovery;
 
     public OIDCEndpoint(JWKSet jwkSet,
-                        OIDCDiscovery oidcDiscovery) {
+                        OAuth2Properties oidcDiscovery) {
         this.jwkSet = jwkSet;
         this.oidcDiscovery = oidcDiscovery;
     }
 
     @RequestMapping("/openid/.well-known/openid-configuration")
-    public ResponseEntity<OIDCDiscovery> openIdDiscovery() {
-        return new ResponseEntity<>(oidcDiscovery, HttpStatus.OK);
+    public ResponseEntity<OAuth2Properties.OidcProperties> openIdDiscovery() {
+        return new ResponseEntity<>(oidcDiscovery.getOpenid(), HttpStatus.OK);
     }
 
     @GetMapping("/openid/.well-known/jwks.json")

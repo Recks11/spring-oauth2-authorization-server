@@ -1,7 +1,5 @@
 oauth2:
-  openid:
-    implicit:
-      enabled: ${ENABLE_IMPLICIT_ID_TOKEN}
+  implicit-enabled: ${ENABLE_IMPLICIT_ID_TOKEN}
 spring:
   application:
     name: AUTHENTICATION_SERVER

@@ -1,6 +1,6 @@
 package dev.rexijie.auth;
 
-import dev.rexijie.auth.config.OIDCDiscovery;
+import dev.rexijie.auth.config.OAuth2Properties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
@@ -9,7 +9,7 @@ import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
  * @author Rex Ijiekhuamen
  */
 @SpringBootApplication
-@ConfigurationPropertiesScan(basePackageClasses = {OIDCDiscovery.class})
+@ConfigurationPropertiesScan(basePackageClasses = {OAuth2Properties.class})
 public class Oauth2ServerApplication {
 
     public static void main(String[] args) {

@@ -3,18 +3,10 @@ server:
 spring:
   application:
     name: REX-AUTH
-  data:
-    mongodb:
-      username: idea
-      password: ideapass
-      database: authserver
-      auto-index-creation: true
 
 oauth2:
   server:
     resourceid: oauth2-server
   openid:
-    discovery:
-      baseUri: http://127.0.0.1:${server.port}
-    implicit:
-      enabled: true
+    baseUri: http://127.0.0.1:${server.port}
+  implicit-enabled: true

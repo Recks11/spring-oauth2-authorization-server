@@ -1,8 +1,8 @@
 {
   "properties": [
     {
-      "name": "oauth2.openid.implicit.enabled",
+      "name": "oauth2.openid.implicit-enabled",
       "type": "java.lang.String",
       "description": "Enable ID token generation for implicit flow."
-  }
-] }
+    }
+  ] }
