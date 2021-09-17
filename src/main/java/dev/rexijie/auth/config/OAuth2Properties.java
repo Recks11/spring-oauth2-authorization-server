@@ -10,7 +10,6 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.ConstructorBinding;
-import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 import java.util.Set;
 
@@ -29,6 +28,7 @@ public class OAuth2Properties {
      */
     @Getter
     @Setter
+    @AllArgsConstructor
     public static class OAuth2ServerProperties {
         private String resourceId;
     }
@@ -38,6 +38,7 @@ public class OAuth2Properties {
      * OAuth2 OpenIDConnect Properties from property source
      */
     @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
+    @AllArgsConstructor
     public static class OidcProperties {
         @JsonIgnore
         private String baseUri;
