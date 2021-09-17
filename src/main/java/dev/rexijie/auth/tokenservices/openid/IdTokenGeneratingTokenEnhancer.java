@@ -1,5 +1,6 @@
 package dev.rexijie.auth.tokenservices.openid;
 
+import dev.rexijie.auth.config.OAuth2Properties;
 import dev.rexijie.auth.constants.Scopes;
 import dev.rexijie.auth.model.User;
 import dev.rexijie.auth.model.token.IDToken;
@@ -8,7 +9,6 @@ import dev.rexijie.auth.service.UserService;
 import dev.rexijie.auth.tokenservices.JwtTokenEnhancer;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.impl.DefaultClaims;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.jwt.JwtHelper;
 import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;
@@ -20,6 +20,8 @@ import org.springframework.security.oauth2.provider.OAuth2Request;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
+import java.security.interfaces.RSAPrivateKey;
+import java.security.interfaces.RSAPublicKey;
 import java.time.Instant;
 import java.util.*;
 
@@ -37,15 +39,16 @@ public class IdTokenGeneratingTokenEnhancer extends JwtTokenEnhancer {
 
     private final IDTokenClaimsEnhancer enhancer;
     private final UserService userService;
-    @Value("${oauth2.openid.implicit.enabled}")
-    private final boolean implicitEnabled = false;
+    private final boolean implicitEnabled;
 
     public IdTokenGeneratingTokenEnhancer(UserService userService,
                                           IDTokenClaimsEnhancer enhancer,
-                                          KeyPairHolder keyPairHolder) {
+                                          KeyPairHolder<RSAPublicKey, RSAPrivateKey> keyPairHolder,
+                                          OAuth2Properties properties) {
         super(keyPairHolder);
         this.userService = userService;
         this.enhancer = enhancer;
+        implicitEnabled = properties.isImplicitEnabled();
     }
 
     @Override

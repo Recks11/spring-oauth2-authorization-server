@@ -26,13 +26,13 @@ public class JwtTokenEnhancer extends JwtAccessTokenConverter {
     private String issuer;
     private final JsonParser objectMapper = JsonParserFactory.create();
     private final Signer signer;
-    private final KeyPairHolder keyPairHolder;
+    private final KeyPairHolder<RSAPublicKey, RSAPrivateKey> keyPairHolder;
 
-    public JwtTokenEnhancer(KeyPairHolder keyPairHolder) {
+    public JwtTokenEnhancer(KeyPairHolder<RSAPublicKey, RSAPrivateKey> keyPairHolder) {
         super();
         this.keyPairHolder = keyPairHolder;
         setKeyPair(keyPairHolder.getKeyPair());
-        this.signer = new RsaSigner((RSAPrivateKey) keyPairHolder.getPrivateKey());
+        this.signer = new RsaSigner(keyPairHolder.getPrivateKey());
     }
 
     @SneakyThrows

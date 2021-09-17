@@ -1,5 +1,6 @@
 package dev.rexijie.auth.init;
 
+import dev.rexijie.auth.config.OAuth2Properties;
 import dev.rexijie.auth.constants.GrantTypes;
 import dev.rexijie.auth.model.client.Client;
 import dev.rexijie.auth.model.client.ClientProfiles;
@@ -8,7 +9,6 @@ import dev.rexijie.auth.repository.ClientRepository;
 import dev.rexijie.auth.service.ClientService;
 import dev.rexijie.auth.service.SecretGenerator;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Profile;
@@ -26,23 +26,23 @@ import java.util.Set;
 @Component
 @Profile({"docker", "dev"})
 public class Start implements ApplicationListener<ApplicationStartedEvent> {
-    @Value("${oauth2.server.resourceid}")
-    private String resourceId;
-    @Value("${oauth2.openid.discovery.baseUri}")
-    private String baseUrl;
     private final String defaultClientName = "X9125 Authorization Server";
     private final ClientRepository clientRepository;
     private final PasswordEncoder encoder;
     private final SecretGenerator generator;
     private final ClientService clientService;
+    private final OAuth2Properties oAuth2ServerProperties;
 
     public Start(ClientRepository clientRepository,
                  PasswordEncoder encoder,
-                 SecretGenerator generator, ClientService clientService) {
+                 SecretGenerator generator, ClientService clientService,
+                 OAuth2Properties oAuth2Properties) {
         this.clientRepository = clientRepository;
         this.encoder = encoder;
         this.generator = generator;
         this.clientService = clientService;
+        this.oAuth2ServerProperties = oAuth2Properties;
+
     }
 
     @Override
@@ -60,11 +60,11 @@ public class Start implements ApplicationListener<ApplicationStartedEvent> {
         registeredClient.setClientSecret(encoder.encode(clientSecret));
         registeredClient.setAccessTokenValiditySeconds(10 * 60);
         registeredClient.setRefreshTokenValiditySeconds(15 * 60);
-        registeredClient.setResourceIds(List.of(resourceId));
+        registeredClient.setResourceIds(List.of(oAuth2ServerProperties.getServer().getResourceId()));
         registeredClient.setScope(List.of("read", "write", "openid", "profile", "email"));
         registeredClient.setRegisteredRedirectUri(
-                Set.of(baseUrl + "/login/oauth2/code/",
-                        baseUrl));
+                Set.of(oAuth2ServerProperties.getOpenid().getBaseUri() + "/login/oauth2/code/",
+                        oAuth2ServerProperties.getOpenid().getBaseUri()));
         registeredClient.setAuthorizedGrantTypes(
                 List.of(GrantTypes.REFRESH_TOKEN, GrantTypes.PASSWORD, GrantTypes.AUTHORIZATION_CODE, GrantTypes.IMPLICIT));
 

@@ -3,7 +3,9 @@ server:
 spring:
   application:
     name: REX-AUTH
-
+  data:
+    mongodb:
+      uri: ${MONGO_URI}
 oauth2:
   server:
     resourceid: oauth2-server

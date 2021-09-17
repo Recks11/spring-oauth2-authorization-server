@@ -2,7 +2,6 @@ package dev.rexijie.auth.config;
 
 import dev.rexijie.auth.model.token.KeyPairHolder;
 import dev.rexijie.auth.service.ClientService;
-import dev.rexijie.auth.service.SecretGenerator;
 import dev.rexijie.auth.service.UserService;
 import dev.rexijie.auth.tokenservices.DefaultJwtClaimEnhancer;
 import dev.rexijie.auth.tokenservices.JwtClaimsEnhancer;
@@ -22,24 +21,26 @@ import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenCo
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationProvider;
 
+import java.security.interfaces.RSAPrivateKey;
+import java.security.interfaces.RSAPublicKey;
 import java.util.List;
 
 @Configuration
 @Slf4j
 public class TokenServicesConfig {
     private final UserService userService;
-    private final KeyPairHolder keyPairHolder;
+    private final KeyPairHolder<RSAPublicKey, RSAPrivateKey> keyPairHolder;
     private final ClientService clientService;
-    private final String kid;
+    private final OAuth2Properties oAuth2Properties;
 
     public TokenServicesConfig(UserService userService,
-                               KeyPairHolder keyPairHolder,
+                               KeyPairHolder<RSAPublicKey, RSAPrivateKey> keyPairHolder,
                                ClientService clientService,
-                               SecretGenerator secretGenerator) {
+                               OAuth2Properties properties) {
         this.userService = userService;
         this.keyPairHolder = keyPairHolder;
         this.clientService = clientService;
-        this.kid = secretGenerator.generate(8);
+        this.oAuth2Properties = properties;
     }
 
     @Bean
@@ -87,7 +88,7 @@ public class TokenServicesConfig {
     @Bean
     TokenEnhancer idTokenEnhancer() {
         var idTokenEnhancer = new IdTokenGeneratingTokenEnhancer(
-                userService, idTokenClaimsEnhancer(), keyPairHolder);
+                userService, idTokenClaimsEnhancer(), keyPairHolder, oAuth2Properties);
         idTokenEnhancer.setAccessTokenConverter(accessTokenConverter());
         return idTokenEnhancer;
     }
