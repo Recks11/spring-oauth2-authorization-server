@@ -20,7 +20,7 @@
 		<spring-cloud.version>2020.0.3</spring-cloud.version>
 		<maven.compiler.source>${java.version}</maven.compiler.source>
 		<maven.compiler.target>${java.version}</maven.compiler.target>
-		<testcontainers.version>1.15.0</testcontainers.version>
+		<testcontainers.version>1.16.0</testcontainers.version>
 <!--		<spring.security.oauth2.version>${spring-security.version}</spring.security.oauth2.version>-->
 	</properties>
 
@@ -81,6 +81,11 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>junit-jupiter</artifactId>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
