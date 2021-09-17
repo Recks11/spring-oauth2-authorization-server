@@ -18,7 +18,6 @@ class Oauth2ServerApplicationTests {
 	@DynamicPropertySource
 	static void setProperties(DynamicPropertyRegistry registry) {
 		registry.add("spring.data.mongodb.uri", mongoDBContainer::getReplicaSetUrl);
-		mongoDBContainer.close();
 	}
 
 	@Test
