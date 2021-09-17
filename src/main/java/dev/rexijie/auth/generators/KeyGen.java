@@ -11,6 +11,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 import java.security.*;
+import java.security.interfaces.RSAPrivateKey;
+import java.security.interfaces.RSAPublicKey;
 
 @Component
 public class KeyGen {
@@ -21,13 +23,13 @@ public class KeyGen {
     }
 
     @Bean
-    public KeyPairHolder rsaKeys() throws Exception {
+    public KeyPairHolder<RSAPublicKey, RSAPrivateKey> rsaKeys() throws Exception {
         return new RSAKeyPairHolder(secretGenerator.generate(8), generateKeys());
     }
 
     @Bean
-    public JWKSet jwkSet(KeyPairHolder keyPairHolder) {
-        RSAKey.Builder builder = new RSAKey.Builder(((RSAKeyPairHolder) keyPairHolder).getPublicKey())
+    public JWKSet jwkSet(KeyPairHolder<RSAPublicKey, RSAPrivateKey> keyPairHolder) {
+        RSAKey.Builder builder = new RSAKey.Builder(keyPairHolder.getPublicKey())
                 .keyUse(KeyUse.SIGNATURE)
                 .algorithm(JWSAlgorithm.RS256)
                 .keyID(keyPairHolder.getId());

@@ -4,7 +4,7 @@ import java.security.KeyPair;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 
-public class RSAKeyPairHolder implements KeyPairHolder {
+public class RSAKeyPairHolder implements KeyPairHolder<RSAPublicKey, RSAPrivateKey> {
 
     private final String id;
     private final KeyPair keyPair;

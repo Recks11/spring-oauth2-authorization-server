@@ -12,7 +12,5 @@ oauth2:
   server:
     resourceid: test-oauth2-server
   openid:
-    discovery:
-      baseUri: http://127.0.0.1:${server.port}
-    implicit:
-      enabled: true
+    baseUri: http://127.0.0.1:${server.port}
+  implicit-enabled: true

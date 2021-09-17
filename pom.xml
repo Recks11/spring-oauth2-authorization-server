@@ -115,6 +115,15 @@
 					</layers>
 					<imageName>rexijie/${project.artifactId}:${project.version}</imageName>
 				</configuration>
+				<executions>
+					<execution>
+						<id>build oci image</id>
+						<goals>
+							<goal>build-image</goal>
+						</goals>
+						<phase>package</phase>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
