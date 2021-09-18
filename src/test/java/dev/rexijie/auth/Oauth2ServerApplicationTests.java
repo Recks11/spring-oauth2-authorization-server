@@ -11,7 +11,7 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 @Testcontainers
-@SpringBootTest
+@SpringBootTest(classes = Oauth2ServerApplication.class)
 @EnableAutoConfiguration(exclude = EmbeddedMongoAutoConfiguration.class)
 class Oauth2ServerApplicationTests {
 
